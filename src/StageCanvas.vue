@@ -4,7 +4,7 @@ export const canvas = ref()
 </script>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { app, fps } from './main'
 
 // Shaders
@@ -64,43 +64,13 @@ onMounted(() => {
   const mainProgram = createProgram(gl, [mainVS, mainFS])
   const mainProgLocs = {
     n: gl.getUniformLocation(mainProgram, 'n'),
+    scale: gl.getUniformLocation(mainProgram, 'scale'),
+    a: gl.getUniformLocation(mainProgram, 'a'),
+    b: gl.getUniformLocation(mainProgram, 'b'),
+    c: gl.getUniformLocation(mainProgram, 'c'),
+    d: gl.getUniformLocation(mainProgram, 'd'),
     canvasSize: gl.getUniformLocation(mainProgram, 'canvasSize'),
   }
-
-  //--------------------------------
-  // Create buffers
-  //--------------------------------
-
-  // Dummy clip for texture computation
-  // const createDummyClipVA = (gl: WebGL2RenderingContext, program: WebGLProgram) => {
-  //   const buffer = gl.createBuffer()
-  //   gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
-  //   gl.bufferData(
-  //     gl.ARRAY_BUFFER,
-  //     new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), // Rectangle
-  //     gl.STATIC_DRAW
-  //   )
-  //   const vao = gl.createVertexArray()
-  //   gl.bindVertexArray(vao)
-
-  //   // setup our attributes to tell WebGL how to pull
-  //   // the data from the buffer above to the position attribute
-  //   const positionLoc = gl.getAttribLocation(program, 'position')
-  //   gl.enableVertexAttribArray(positionLoc)
-  //   gl.vertexAttribPointer(
-  //     positionLoc,
-  //     2, // size (num components)
-  //     gl.FLOAT, // type of data in buffer
-  //     false, // normalize
-  //     0, // stride (0 = auto)
-  //     0 // offset
-  //   )
-
-  //   return vao
-  // }
-
-  // const drawVA = createDummyClipVA(gl, drawProgram)
-
 
   //================================
   // Frame render function
@@ -130,6 +100,11 @@ onMounted(() => {
       gl.useProgram(mainProgram)
 
       gl.uniform1i(mainProgLocs.n, parameter.value.n)
+      gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
+      gl.uniform2f(mainProgLocs.a, parameter.value.ar, parameter.value.ai)
+      gl.uniform2f(mainProgLocs.b, parameter.value.br, parameter.value.bi)
+      gl.uniform2f(mainProgLocs.c, parameter.value.cr, parameter.value.ci)
+      gl.uniform2f(mainProgLocs.d, parameter.value.dr, parameter.value.di)
       gl.uniform2i(mainProgLocs.canvasSize, app.value.width, app.value.height)
 
       gl.viewport(0, 0, app.value.width, app.value.height)

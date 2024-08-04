@@ -2,6 +2,8 @@
 
 uniform int n;
 uniform ivec2 canvasSize;
+uniform vec2 a, b, c, d;
+uniform float scale;
 
 vec2 mul(vec2 a, vec2 b) {
     return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
@@ -13,11 +15,6 @@ vec2 comp(vec2 a) {
 
 void main() {
     int id = gl_VertexID;
-
-    vec2 a = vec2(0.65f, -0.5f);
-    vec2 b = vec2(0, 0);
-    vec2 c = vec2(-0.25f, 0.5f);
-    vec2 d = vec2(0, 0);
 
     vec2 z = vec2(0.0f);
     int flag = id;
@@ -32,8 +29,7 @@ void main() {
         flag >>= 1;
     }
 
-    vec2 pos = z / vec2(canvasSize) * 400.;
-    // vec2 pos = z;
+    vec2 pos = z / vec2(canvasSize) * scale;
     gl_Position = vec4(pos, 0.0f, 1.0f);
     gl_PointSize = 1.0f;
 }
