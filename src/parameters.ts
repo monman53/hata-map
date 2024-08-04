@@ -10,7 +10,7 @@ export const parameter = ref({
   cr: 0.0,
   ci: 0.0,
   dr: 0.0,
-  di: 0.0,
+  di: 0.0
 })
 
 export const parameterProps = ref([
@@ -27,9 +27,9 @@ export const parameterProps = ref([
       },
       {
         name: 'scale',
-        default: 512,
+        default: 1 << 11,
         min: 0,
-        max: 2048,
+        max: 1 << 13,
         step: 1
       },
       {
@@ -87,7 +87,7 @@ export const parameterProps = ref([
         min: -1,
         max: 1,
         step: 0.001
-      },
+      }
     ]
   }
 ])
