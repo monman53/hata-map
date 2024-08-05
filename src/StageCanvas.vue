@@ -64,6 +64,7 @@ onMounted(() => {
   const mainProgram = createProgram(gl, [mainVS, mainFS])
   const mainProgLocs = {
     n: gl.getUniformLocation(mainProgram, 'n'),
+    n2: gl.getUniformLocation(mainProgram, 'n2'),
     scale: gl.getUniformLocation(mainProgram, 'scale'),
     a: gl.getUniformLocation(mainProgram, 'a'),
     b: gl.getUniformLocation(mainProgram, 'b'),
@@ -100,6 +101,7 @@ onMounted(() => {
       gl.useProgram(mainProgram)
 
       gl.uniform1i(mainProgLocs.n, parameter.value.n)
+      gl.uniform1i(mainProgLocs.n2, parameter.value.n)
       gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
       gl.uniform2f(mainProgLocs.a, parameter.value.ar, parameter.value.ai)
       gl.uniform2f(mainProgLocs.b, parameter.value.br, parameter.value.bi)
