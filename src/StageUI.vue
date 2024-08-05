@@ -58,10 +58,10 @@ const copyImage = () => {
         <i v-if="mode === 'control'" class="bi bi-gear-fill pointer" @click="mode = ''" />
         <i v-else class="bi bi-gear pointer" @click="mode = 'control'" />
       </div>
-      <div>
+      <!-- <div>
         <i v-if="mode === 'info'" class="bi bi-info-circle-fill pointer" @click="mode = ''" />
         <i v-else class="bi bi-info-circle pointer" @click="mode = 'info'" />
-      </div>
+      </div> -->
       <div style="text-align: right">
         <a href="https://github.com/monman53/snowflake"><i class="bi bi-github pointer" /></a>
       </div>
