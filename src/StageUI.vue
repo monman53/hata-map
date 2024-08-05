@@ -5,9 +5,21 @@ import { humanReadable, resetParameter } from './utils'
 import { parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
 import { gaussianRandom } from './math'
+import { parameterTemplates } from './templates'
 
 type ModeType = 'control' | 'info' | ''
 const mode: Ref<ModeType> = ref('')
+
+const setParameter = (t: any) => {
+  parameter.value.ar = t.a.x
+  parameter.value.ai = t.a.y
+  parameter.value.br = t.b.x
+  parameter.value.bi = t.b.y
+  parameter.value.cr = t.c.x
+  parameter.value.ci = t.c.y
+  parameter.value.dr = t.d.x
+  parameter.value.di = t.d.y
+}
 
 const randomParameter = () => {
   const mean = 0
@@ -115,11 +127,12 @@ const copyImage = () => {
         </template>
         <fieldset>
           <legend>Templates</legend>
-          <button @click="randomParameter">Random</button>
-          <!-- <template v-for="(t, idx) of parameterTemplates" :key="idx">
+          <template v-for="(t, idx) of parameterTemplates" :key="idx">
             <button @click="setParameter(t)">{{ t.name }}</button>
             <br v-if="idx % 8 == 7" />
-          </template> -->
+          </template>
+          <br />
+          <button @click="randomParameter">Random</button>
         </fieldset>
       </div>
       <div v-if="mode === 'info'">
