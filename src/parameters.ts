@@ -8,7 +8,7 @@ export const parameter = ref({
   hue: 0.3,
   saturation: 1.0,
   lightness: 0.5,
-  slpha: 0.5,
+  alpha: 0.5,
   ar: 0.0,
   ai: 0.0,
   br: 0.0,
@@ -76,7 +76,7 @@ export const parameterProps = ref([
       },
       {
         name: 'lightness',
-        default: 0.5,
+        default: 0.9,
         min: 0,
         max: 1,
         step: 0.001

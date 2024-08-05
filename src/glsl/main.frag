@@ -53,7 +53,8 @@ vec3 hsl2rgb(float h, float s, float l) {
 }
 
 void main() {
-    float nid = id / float(1 << n2);
-    vec3 color = hsl2rgb(hsl.x, hsl.y, 0.5 + 0.5 * nid);
+    int m = 0;
+    float nid = float(int(id) % (1 << (n2 - m))) / float(1 << (n2 - m));
+    vec3 color = hsl2rgb(hsl.x, hsl.y, (0.5f + 0.5f * nid) * hsl.z);
     outColor = vec4(color, alpha);
 }
