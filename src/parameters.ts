@@ -5,6 +5,10 @@ export const parameter = ref({
   scale: 0,
   timeScale: 0.5,
   moveScale: 1.0,
+  hue: 0.3,
+  saturation: 1.0,
+  lightness: 0.5,
+  slpha: 0.5,
   ar: 0.0,
   ai: 0.0,
   br: 0.0,
@@ -20,12 +24,12 @@ export const parameter = ref({
   crStd: 0.0,
   ciStd: 0.0,
   drStd: 0.0,
-  diStd: 0.0,
+  diStd: 0.0
 })
 
 export const parameterProps = ref([
   {
-    name: 'Parameters',
+    name: 'Display',
     visible: true,
     props: [
       {
@@ -56,6 +60,40 @@ export const parameterProps = ref([
         max: 64,
         step: 0.001
       },
+      {
+        name: 'hue',
+        default: 0.3,
+        min: 0,
+        max: 1,
+        step: 0.001
+      },
+      {
+        name: 'saturation',
+        default: 1.0,
+        min: 0,
+        max: 1,
+        step: 0.001
+      },
+      {
+        name: 'lightness',
+        default: 0.5,
+        min: 0,
+        max: 1,
+        step: 0.001
+      },
+      {
+        name: 'alpha',
+        default: 1.0,
+        min: 0,
+        max: 1,
+        step: 0.001
+      }
+    ]
+  },
+  {
+    name: 'Parameters',
+    visible: false,
+    props: [
       {
         name: 'ar',
         default: 0.7,

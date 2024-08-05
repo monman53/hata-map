@@ -75,6 +75,8 @@ onMounted(() => {
     paramI2: gl.getUniformLocation(mainProgram, 'paramI2'),
     paramR3: gl.getUniformLocation(mainProgram, 'paramR3'),
     paramI3: gl.getUniformLocation(mainProgram, 'paramI3'),
+    hsl: gl.getUniformLocation(mainProgram, 'hsl'),
+    alpha: gl.getUniformLocation(mainProgram, 'alpha'),
     canvasSize: gl.getUniformLocation(mainProgram, 'canvasSize'),
   }
 
@@ -157,9 +159,15 @@ onMounted(() => {
       gl.uniform4f(mainProgLocs.paramI2, a[2].y, b[2].y, c[2].y, d[2].y)
       gl.uniform4f(mainProgLocs.paramR3, a[3].x, b[3].x, c[3].x, d[3].x)
       gl.uniform4f(mainProgLocs.paramI3, a[3].y, b[3].y, c[3].y, d[3].y)
+      gl.uniform3f(mainProgLocs.hsl, parameter.value.hue, parameter.value.saturation, parameter.value.lightness)
+      gl.uniform1f(mainProgLocs.alpha, parameter.value.alpha)
       gl.uniform2i(mainProgLocs.canvasSize, app.value.width, app.value.height)
 
       gl.viewport(0, 0, app.value.width, app.value.height)
+
+      // gl.blendFunc(gl.SRC_ALPHA, gl.DST_ALPHA)
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+      gl.enable(gl.BLEND)
 
       gl.clearColor(0, 0, 0, 1)
       gl.clear(gl.COLOR_BUFFER_BIT)
