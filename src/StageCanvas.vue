@@ -145,8 +145,8 @@ onMounted(() => {
         cStd3 = vec(gaussianRandom(), gaussianRandom())
         dStd3 = vec(gaussianRandom(), gaussianRandom())
       }
-      appThen = time
     }
+    appThen = time
 
     a[2] = vec(
       parameter.value.ar + aStd2.x * parameter.value.arStd * parameter.value.moveScale,
