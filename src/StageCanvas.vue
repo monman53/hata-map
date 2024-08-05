@@ -77,7 +77,7 @@ onMounted(() => {
     paramI3: gl.getUniformLocation(mainProgram, 'paramI3'),
     hsl: gl.getUniformLocation(mainProgram, 'hsl'),
     alpha: gl.getUniformLocation(mainProgram, 'alpha'),
-    canvasSize: gl.getUniformLocation(mainProgram, 'canvasSize'),
+    canvasSize: gl.getUniformLocation(mainProgram, 'canvasSize')
   }
 
   //================================
@@ -95,6 +95,14 @@ onMounted(() => {
   let b = [b0, b0, b0, b0]
   let c = [c0, c0, c0, c0]
   let d = [d0, d0, d0, d0]
+  let aStd2 = vec(0, 0)
+  let bStd2 = vec(0, 0)
+  let cStd2 = vec(0, 0)
+  let dStd2 = vec(0, 0)
+  let aStd3 = vec(0, 0)
+  let bStd3 = vec(0, 0)
+  let cStd3 = vec(0, 0)
+  let dStd3 = vec(0, 0)
   const render = (time: number) => {
     if (gl === null) {
       throw new Error()
@@ -115,7 +123,7 @@ onMounted(() => {
     //--------------------------------
     if (!app.value.pause) {
       const dt = time - appThen
-      t += dt * parameter.value.timeScale / 300;
+      t += (dt * parameter.value.timeScale) / 300
       // Update
       if (t > 1.0) {
         t = t - Math.floor(t)
@@ -128,17 +136,50 @@ onMounted(() => {
         b[1] = b[3].add(b[3].sub(b[2]))
         c[1] = c[3].add(c[3].sub(c[2]))
         d[1] = d[3].add(d[3].sub(d[2]))
-        a[2] = vec(gaussianRandom(parameter.value.ar, parameter.value.arStd * parameter.value.moveScale), gaussianRandom(parameter.value.ai, parameter.value.aiStd * parameter.value.moveScale))
-        b[2] = vec(gaussianRandom(parameter.value.br, parameter.value.brStd * parameter.value.moveScale), gaussianRandom(parameter.value.bi, parameter.value.biStd * parameter.value.moveScale))
-        c[2] = vec(gaussianRandom(parameter.value.cr, parameter.value.crStd * parameter.value.moveScale), gaussianRandom(parameter.value.ci, parameter.value.ciStd * parameter.value.moveScale))
-        d[2] = vec(gaussianRandom(parameter.value.dr, parameter.value.drStd * parameter.value.moveScale), gaussianRandom(parameter.value.di, parameter.value.diStd * parameter.value.moveScale))
-        a[3] = vec(gaussianRandom(parameter.value.ar, parameter.value.arStd * parameter.value.moveScale), gaussianRandom(parameter.value.ai, parameter.value.aiStd * parameter.value.moveScale))
-        b[3] = vec(gaussianRandom(parameter.value.br, parameter.value.brStd * parameter.value.moveScale), gaussianRandom(parameter.value.bi, parameter.value.biStd * parameter.value.moveScale))
-        c[3] = vec(gaussianRandom(parameter.value.cr, parameter.value.crStd * parameter.value.moveScale), gaussianRandom(parameter.value.ci, parameter.value.ciStd * parameter.value.moveScale))
-        d[3] = vec(gaussianRandom(parameter.value.dr, parameter.value.drStd * parameter.value.moveScale), gaussianRandom(parameter.value.di, parameter.value.diStd * parameter.value.moveScale))
+        aStd2 = vec(gaussianRandom(), gaussianRandom())
+        bStd2 = vec(gaussianRandom(), gaussianRandom())
+        cStd2 = vec(gaussianRandom(), gaussianRandom())
+        dStd2 = vec(gaussianRandom(), gaussianRandom())
+        aStd3 = vec(gaussianRandom(), gaussianRandom())
+        bStd3 = vec(gaussianRandom(), gaussianRandom())
+        cStd3 = vec(gaussianRandom(), gaussianRandom())
+        dStd3 = vec(gaussianRandom(), gaussianRandom())
       }
       appThen = time
     }
+
+    a[2] = vec(
+      parameter.value.ar + aStd2.x * parameter.value.arStd * parameter.value.moveScale,
+      parameter.value.ai + aStd2.y * parameter.value.aiStd * parameter.value.moveScale
+    )
+    b[2] = vec(
+      parameter.value.br + bStd2.x * parameter.value.brStd * parameter.value.moveScale,
+      parameter.value.bi + bStd2.y * parameter.value.biStd * parameter.value.moveScale
+    )
+    c[2] = vec(
+      parameter.value.cr + cStd2.x * parameter.value.crStd * parameter.value.moveScale,
+      parameter.value.ci + cStd2.y * parameter.value.ciStd * parameter.value.moveScale
+    )
+    d[2] = vec(
+      parameter.value.dr + dStd2.x * parameter.value.drStd * parameter.value.moveScale,
+      parameter.value.di + dStd2.y * parameter.value.diStd * parameter.value.moveScale
+    )
+    a[3] = vec(
+      parameter.value.ar + aStd3.x * parameter.value.arStd * parameter.value.moveScale,
+      parameter.value.ai + aStd3.y * parameter.value.aiStd * parameter.value.moveScale
+    )
+    b[3] = vec(
+      parameter.value.br + bStd3.x * parameter.value.brStd * parameter.value.moveScale,
+      parameter.value.bi + bStd3.y * parameter.value.biStd * parameter.value.moveScale
+    )
+    c[3] = vec(
+      parameter.value.cr + cStd3.x * parameter.value.crStd * parameter.value.moveScale,
+      parameter.value.ci + cStd3.y * parameter.value.ciStd * parameter.value.moveScale
+    )
+    d[3] = vec(
+      parameter.value.dr + dStd3.x * parameter.value.drStd * parameter.value.moveScale,
+      parameter.value.di + dStd3.y * parameter.value.diStd * parameter.value.moveScale
+    )
 
     //--------------------------------
     // Draw
@@ -159,7 +200,12 @@ onMounted(() => {
       gl.uniform4f(mainProgLocs.paramI2, a[2].y, b[2].y, c[2].y, d[2].y)
       gl.uniform4f(mainProgLocs.paramR3, a[3].x, b[3].x, c[3].x, d[3].x)
       gl.uniform4f(mainProgLocs.paramI3, a[3].y, b[3].y, c[3].y, d[3].y)
-      gl.uniform3f(mainProgLocs.hsl, parameter.value.hue, parameter.value.saturation, parameter.value.lightness)
+      gl.uniform3f(
+        mainProgLocs.hsl,
+        parameter.value.hue,
+        parameter.value.saturation,
+        parameter.value.lightness
+      )
       gl.uniform1f(mainProgLocs.alpha, parameter.value.alpha)
       gl.uniform2i(mainProgLocs.canvasSize, app.value.width, app.value.height)
 
