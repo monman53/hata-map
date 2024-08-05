@@ -60,14 +60,13 @@ void main() {
     vec2 z = vec2(0.0f);
     int flag = gl_VertexID;
     for(int i = 0; i < n; i++) {
-        if((flag & 1) == 0) {
+        if((flag & (1 << (i))) == 0) {
             // f1
             z = mul(a, z) + mul(b, comp(z));
         } else {
             // f2
             z = mul(c, vec2(z.x - 1.f, z.y)) + mul(d, vec2(z.x - 1.0f, -z.y)) + vec2(1.0f, 0.0f);
         }
-        flag >>= 1;
     }
 
     vec2 pos = ((z - vec2(0.5f, 0.0f)) / vec2(canvasSize)) * scale;

@@ -2,14 +2,25 @@
 import { ref, type Ref } from 'vue'
 import { app, fps } from './main'
 import { humanReadable, resetParameter } from './utils'
-import { parameterTemplates } from './templates'
 import { parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
+import { gaussianRandom } from './math'
 
 type ModeType = 'control' | 'info' | ''
 const mode: Ref<ModeType> = ref('')
 
-const setAndReset = ref(true)
+const randomParameter = () => {
+  const mean = 0
+  const std = 0.4
+  parameter.value.ar = gaussianRandom(mean, std)
+  parameter.value.ai = gaussianRandom(mean, std)
+  parameter.value.br = gaussianRandom(mean, std)
+  parameter.value.bi = gaussianRandom(mean, std)
+  parameter.value.cr = gaussianRandom(mean, std)
+  parameter.value.ci = gaussianRandom(mean, std)
+  parameter.value.dr = gaussianRandom(mean, std)
+  parameter.value.di = gaussianRandom(mean, std)
+}
 
 const saveImage = () => {
   const link = document.createElement('a')
@@ -102,18 +113,17 @@ const copyImage = () => {
             </template>
           </fieldset>
         </template>
-        <!-- <fieldset>
+        <fieldset>
           <legend>Templates</legend>
-          <template v-for="(t, idx) of parameterTemplates" :key="idx">
+          <button @click="randomParameter">Random</button>
+          <!-- <template v-for="(t, idx) of parameterTemplates" :key="idx">
             <button @click="setParameter(t)">{{ t.name }}</button>
             <br v-if="idx % 8 == 7" />
-          </template>
-        </fieldset> -->
+          </template> -->
+        </fieldset>
       </div>
       <div v-if="mode === 'info'">
-        <p>
-          TBD
-        </p>
+        <p>TBD</p>
       </div>
     </div>
     <div v-if="mode !== ''" class="footer">
