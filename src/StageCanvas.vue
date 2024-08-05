@@ -113,7 +113,7 @@ onMounted(() => {
     //--------------------------------
     if (!app.value.pause) {
       const dt = time - appThen
-      t += dt * parameter.value.timeScale / 200;
+      t += dt * parameter.value.timeScale / 300;
       // Update
       if (t > 1.0) {
         t = t - Math.floor(t)

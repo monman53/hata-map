@@ -53,7 +53,7 @@ export const parameterProps = ref([
         name: 'moveScale',
         default: 1.0,
         min: 0,
-        max: 10.0,
+        max: 64,
         step: 0.001
       },
       {
