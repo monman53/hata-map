@@ -1,8 +1,7 @@
 #version 300 es
 precision highp float;
 
-in float id;
-uniform int n2;
+in float colorScale;
 
 uniform vec3 hsl;
 uniform float alpha;
@@ -53,8 +52,6 @@ vec3 hsl2rgb(float h, float s, float l) {
 }
 
 void main() {
-    int m = 0;
-    float nid = float(int(id) % (1 << (n2 - m))) / float(1 << (n2 - m));
-    vec3 color = hsl2rgb(hsl.x, hsl.y, (0.5f + 0.5f * nid) * hsl.z);
+    vec3 color = hsl2rgb(hsl.x, hsl.y, (0.5f + 0.5f * colorScale) * hsl.z);
     outColor = vec4(color, alpha);
 }

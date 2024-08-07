@@ -64,7 +64,6 @@ onMounted(() => {
   const mainProgram = createProgram(gl, [mainVS, mainFS])
   const mainProgLocs = {
     n: gl.getUniformLocation(mainProgram, 'n'),
-    n2: gl.getUniformLocation(mainProgram, 'n2'),
     scale: gl.getUniformLocation(mainProgram, 'scale'),
     t: gl.getUniformLocation(mainProgram, 't'),
     param0: gl.getUniformLocation(mainProgram, 'param0'),
@@ -190,7 +189,6 @@ onMounted(() => {
       gl.useProgram(mainProgram)
 
       gl.uniform1i(mainProgLocs.n, parameter.value.n)
-      gl.uniform1i(mainProgLocs.n2, parameter.value.n)
       gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
       gl.uniform1f(mainProgLocs.t, app.value.t)
       gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [a[0].x, a[0].y, b[0].x, b[0].y, c[0].x, c[0].y, d[0].x, d[0].y])

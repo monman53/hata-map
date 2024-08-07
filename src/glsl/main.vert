@@ -11,7 +11,7 @@ uniform mat4x2 param3;
 
 uniform float t;
 
-out float id;
+out float colorScale;
 
 vec2 mul(vec2 a, vec2 b) {
     return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
@@ -42,7 +42,7 @@ void main() {
     vec2 z = vec2(0.0f);
     int flag = gl_VertexID;
     for(int i = 0; i < n; i++) {
-        if((flag & (1 << (i))) == 0) {
+        if((flag & (1 << i)) == 0) {
             // f1
             z = mul(a, z) + mul(b, comp(z));
         } else {
@@ -55,5 +55,7 @@ void main() {
     gl_Position = vec4(pos, 0.0f, 1.0f);
     gl_PointSize = 1.0f;
 
-    id = float(gl_VertexID);
+    int id = gl_VertexID;
+    int m = 0;
+    colorScale = float(id % (1 << (n - m))) / float(1 << (n - m));
 }
