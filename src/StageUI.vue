@@ -72,6 +72,7 @@ const copyImage = () => {
       <div v-if="mode === 'control'" id="controller">
         <fieldset>
           <legend>Animation</legend>
+          <!-- {{ app.pointerPos.x }}, {{ app.pointerPos.y }} -->
           <span id="animation">
             <i v-if="!app.pause" class="bi bi-pause-fill pointer" @click="app.pause = true"></i>
             <i v-if="app.pause" class="bi bi-play-fill pointer" @click="app.pause = false"></i>

@@ -1,6 +1,71 @@
 <script lang="ts">
 // Canvases
 export const canvas = ref()
+
+// Methods
+const getPositionOnSvg = (e: any) => {
+  const rect = canvas.value.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const y= rect.bottom - e.clientY
+  return vec(x, y)
+}
+
+const getPositionOnSvgApp = (e: any) => {
+  const m = getPositionOnSvg(e)
+  const x = (m.x - app.value.width / 2) / parameter.value.scale*2 + app.value.c.x
+  const y = (m.y - app.value.height/ 2) / parameter.value.scale*2 + app.value.c.y
+  return vec(x, y)
+}
+
+const getPositionDiffOnSvgApp = (e: any, m0: Vec) => {
+  const m = getPositionOnSvg(e)
+  const d = m.inplaceSub(m0).inplaceDiv(parameter.value.scale / 2)
+  return d
+}
+
+const preventDefaultAndStopPropagation = (e: any) => {
+  e.stopPropagation()
+  e.preventDefault()
+}
+
+// Elements move system on SVG
+let moveHandlerWithM0: any = null
+let m0: Vec
+const setMoveHandlerWithM0 = (h: any, m: Vec) => {
+  moveHandlerWithM0 = h
+  m0 = m
+}
+
+const svgMoveHandler = (e: any) => {
+  e.preventDefault()
+  app.value.pointerPos = getPositionOnSvgApp(e)
+  if (moveHandlerWithM0 !== null) {
+    preventDefaultAndStopPropagation(e)
+    const d = getPositionDiffOnSvgApp(e, m0)
+    moveHandlerWithM0(e, d)
+  }
+}
+const svgMoveEndHandler = () => {
+  moveHandlerWithM0 = null
+}
+
+const svgScaleHandler = (e: any) => {
+  preventDefaultAndStopPropagation(e)
+  // Zoom in/out
+  const p = getPositionOnSvgApp(e)
+  const scaleFactor = 1.2
+  const r = e.deltaY > 0 ? scaleFactor : 1 / scaleFactor
+  app.value.c = app.value.c.add(p.sub(app.value.c).mul(1 - r))
+  parameter.value.scale /= r
+}
+
+const moveStart = (e: any) => {
+  const c0 = app.value.c.copy()
+  const m0 = getPositionOnSvg(e)
+  setMoveHandlerWithM0((e_: any, d: Vec) => {
+    app.value.c = c0.sub(d)
+  }, m0)
+}
 </script>
 
 <script setup lang="ts">
@@ -11,7 +76,7 @@ import { app, fps } from './main'
 import mainVS from './glsl/main.vert?raw'
 import mainFS from './glsl/main.frag?raw'
 import { parameter } from './parameters'
-import { gaussianRandom, vec } from './math'
+import { gaussianRandom, Vec, vec } from './math'
 
 //--------------------------------
 // WebGL support functions
@@ -65,6 +130,7 @@ onMounted(() => {
   const mainProgLocs = {
     n: gl.getUniformLocation(mainProgram, 'n'),
     scale: gl.getUniformLocation(mainProgram, 'scale'),
+    center: gl.getUniformLocation(mainProgram, 'center'),
     t: gl.getUniformLocation(mainProgram, 't'),
     param0: gl.getUniformLocation(mainProgram, 'param0'),
     param1: gl.getUniformLocation(mainProgram, 'param1'),
@@ -190,6 +256,7 @@ onMounted(() => {
 
       gl.uniform1i(mainProgLocs.n, parameter.value.n)
       gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
+      gl.uniform2f(mainProgLocs.center, app.value.c.x, app.value.c.y)
       gl.uniform1f(mainProgLocs.t, app.value.t)
       gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [a[0].x, a[0].y, b[0].x, b[0].y, c[0].x, c[0].y, d[0].x, d[0].y])
       gl.uniformMatrix4x2fv(mainProgLocs.param1, false, [a[1].x, a[1].y, b[1].x, b[1].y, c[1].x, c[1].y, d[1].x, d[1].y])
@@ -226,6 +293,7 @@ onMounted(() => {
 
 <template>
   <div id="base">
-    <canvas ref="canvas" :width="app.width" :height="app.height"></canvas>
+    <canvas ref="canvas" :width="app.width" :height="app.height" @mousemove="svgMoveHandler"
+      @mouseup="svgMoveEndHandler" @wheel="svgScaleHandler" @mousedown="moveStart"></canvas>
   </div>
 </template>

@@ -3,6 +3,7 @@ import './assets/main.css'
 import { createApp, ref } from 'vue'
 import App from './App.vue'
 import { resetAllParameter } from './utils'
+import { vec } from './math'
 
 export const app = ref({
   width: window.innerWidth,
@@ -10,6 +11,8 @@ export const app = ref({
   n: 10,
   pause: false,
   t: 0,
+  c: vec(0, 0),
+  pointerPos: vec(0, 0)
 })
 
 export const fps = ref(0)

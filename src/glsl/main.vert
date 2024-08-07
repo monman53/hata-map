@@ -3,6 +3,7 @@
 uniform int n;
 uniform ivec2 canvasSize;
 uniform float scale;
+uniform vec2 center;
 
 uniform mat4x2 param0;
 uniform mat4x2 param1;
@@ -51,7 +52,8 @@ void main() {
         }
     }
 
-    vec2 pos = ((z - vec2(0.5f, 0.0f)) / vec2(canvasSize)) * scale;
+    vec2 aspect = 1.0 / vec2(canvasSize);
+    vec2 pos = (z - center) * aspect * scale;
     gl_Position = vec4(pos, 0.0f, 1.0f);
     gl_PointSize = 1.0f;
 

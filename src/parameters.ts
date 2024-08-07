@@ -41,9 +41,9 @@ export const parameterProps = ref([
       },
       {
         name: 'scale',
-        default: 1 << 10,
+        default: window.innerWidth,
         min: 0,
-        max: 1 << 13,
+        max: 1 << 4,
         step: 1
       },
       {
