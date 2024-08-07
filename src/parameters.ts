@@ -50,14 +50,14 @@ export const parameterProps = ref([
         name: 'timeScale',
         default: 0.5,
         min: 0,
-        max: 1,
+        max: 3,
         step: 0.001
       },
       {
         name: 'moveScale',
         default: 1.0,
         min: 0,
-        max: 64,
+        max: 128,
         step: 0.001
       },
       {

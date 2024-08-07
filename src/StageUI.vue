@@ -19,6 +19,7 @@ const setParameter = (t: any) => {
   parameter.value.ci = t.c.y
   parameter.value.dr = t.d.x
   parameter.value.di = t.d.y
+  app.value.t = 2;
 }
 
 const randomParameter = () => {

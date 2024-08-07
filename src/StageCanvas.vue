@@ -86,7 +86,6 @@ onMounted(() => {
   let counter = 0
   let fpsThen = 0
   let appThen = 0
-  let t = 0
   let a0 = vec(parameter.value.ar, parameter.value.ai)
   let b0 = vec(parameter.value.br, parameter.value.bi)
   let c0 = vec(parameter.value.cr, parameter.value.ci)
@@ -123,10 +122,10 @@ onMounted(() => {
     //--------------------------------
     if (!app.value.pause) {
       const dt = time - appThen
-      t += (dt * parameter.value.timeScale) / 300
+      app.value.t += (dt * parameter.value.timeScale) / 300
       // Update
-      if (t > 1.0) {
-        t = t - Math.floor(t)
+      if (app.value.t > 1.0) {
+        app.value.t = app.value.t - Math.floor(app.value.t)
 
         a[0] = a[3]
         b[0] = b[3]
@@ -191,7 +190,7 @@ onMounted(() => {
       gl.uniform1i(mainProgLocs.n, parameter.value.n)
       gl.uniform1i(mainProgLocs.n2, parameter.value.n)
       gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
-      gl.uniform1f(mainProgLocs.t, t)
+      gl.uniform1f(mainProgLocs.t, app.value.t)
       gl.uniform4f(mainProgLocs.paramR0, a[0].x, b[0].x, c[0].x, d[0].x)
       gl.uniform4f(mainProgLocs.paramI0, a[0].y, b[0].y, c[0].y, d[0].y)
       gl.uniform4f(mainProgLocs.paramR1, a[1].x, b[1].x, c[1].x, d[1].x)

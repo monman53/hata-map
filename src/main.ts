@@ -9,6 +9,7 @@ export const app = ref({
   height: window.innerHeight,
   n: 10,
   pause: false,
+  t: 0,
 })
 
 export const fps = ref(0)
