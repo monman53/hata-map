@@ -53,7 +53,7 @@ const svgScaleHandler = (e: any) => {
   preventDefaultAndStopPropagation(e)
   // Zoom in/out
   const p = getPositionOnSvgApp(e)
-  const scaleFactor = 1.2
+  const scaleFactor = 1.1
   const r = e.deltaY > 0 ? scaleFactor : 1 / scaleFactor
   app.value.c = app.value.c.add(p.sub(app.value.c).mul(1 - r))
   parameter.value.scale /= r
