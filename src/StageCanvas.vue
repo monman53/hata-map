@@ -274,8 +274,8 @@ onMounted(() => {
 
     gl.viewport(0, 0, app.value.width, app.value.height)
 
-    gl.blendFunc(gl.SRC_ALPHA, gl.DST_ALPHA)
-    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+    // gl.blendFunc(gl.SRC_ALPHA, gl.DST_ALPHA)
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
     gl.enable(gl.BLEND)
 
     gl.clearColor(0, 0, 0, 1)
