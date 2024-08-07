@@ -67,14 +67,10 @@ onMounted(() => {
     n2: gl.getUniformLocation(mainProgram, 'n2'),
     scale: gl.getUniformLocation(mainProgram, 'scale'),
     t: gl.getUniformLocation(mainProgram, 't'),
-    paramR0: gl.getUniformLocation(mainProgram, 'paramR0'),
-    paramI0: gl.getUniformLocation(mainProgram, 'paramI0'),
-    paramR1: gl.getUniformLocation(mainProgram, 'paramR1'),
-    paramI1: gl.getUniformLocation(mainProgram, 'paramI1'),
-    paramR2: gl.getUniformLocation(mainProgram, 'paramR2'),
-    paramI2: gl.getUniformLocation(mainProgram, 'paramI2'),
-    paramR3: gl.getUniformLocation(mainProgram, 'paramR3'),
-    paramI3: gl.getUniformLocation(mainProgram, 'paramI3'),
+    param0: gl.getUniformLocation(mainProgram, 'param0'),
+    param1: gl.getUniformLocation(mainProgram, 'param1'),
+    param2: gl.getUniformLocation(mainProgram, 'param2'),
+    param3: gl.getUniformLocation(mainProgram, 'param3'),
     hsl: gl.getUniformLocation(mainProgram, 'hsl'),
     alpha: gl.getUniformLocation(mainProgram, 'alpha'),
     canvasSize: gl.getUniformLocation(mainProgram, 'canvasSize')
@@ -191,14 +187,10 @@ onMounted(() => {
       gl.uniform1i(mainProgLocs.n2, parameter.value.n)
       gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
       gl.uniform1f(mainProgLocs.t, app.value.t)
-      gl.uniform4f(mainProgLocs.paramR0, a[0].x, b[0].x, c[0].x, d[0].x)
-      gl.uniform4f(mainProgLocs.paramI0, a[0].y, b[0].y, c[0].y, d[0].y)
-      gl.uniform4f(mainProgLocs.paramR1, a[1].x, b[1].x, c[1].x, d[1].x)
-      gl.uniform4f(mainProgLocs.paramI1, a[1].y, b[1].y, c[1].y, d[1].y)
-      gl.uniform4f(mainProgLocs.paramR2, a[2].x, b[2].x, c[2].x, d[2].x)
-      gl.uniform4f(mainProgLocs.paramI2, a[2].y, b[2].y, c[2].y, d[2].y)
-      gl.uniform4f(mainProgLocs.paramR3, a[3].x, b[3].x, c[3].x, d[3].x)
-      gl.uniform4f(mainProgLocs.paramI3, a[3].y, b[3].y, c[3].y, d[3].y)
+      gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [a[0].x, a[0].y, b[0].x, b[0].y, c[0].x, c[0].y, d[0].x, d[0].y])
+      gl.uniformMatrix4x2fv(mainProgLocs.param1, false, [a[1].x, a[1].y, b[1].x, b[1].y, c[1].x, c[1].y, d[1].x, d[1].y])
+      gl.uniformMatrix4x2fv(mainProgLocs.param2, false, [a[2].x, a[2].y, b[2].x, b[2].y, c[2].x, c[2].y, d[2].x, d[2].y])
+      gl.uniformMatrix4x2fv(mainProgLocs.param3, false, [a[3].x, a[3].y, b[3].x, b[3].y, c[3].x, c[3].y, d[3].x, d[3].y])
       gl.uniform3f(
         mainProgLocs.hsl,
         parameter.value.hue,

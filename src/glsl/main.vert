@@ -4,14 +4,10 @@ uniform int n;
 uniform ivec2 canvasSize;
 uniform float scale;
 
-uniform vec4 paramR0;
-uniform vec4 paramI0;
-uniform vec4 paramR1;
-uniform vec4 paramI1;
-uniform vec4 paramR2;
-uniform vec4 paramI2;
-uniform vec4 paramR3;
-uniform vec4 paramI3;
+uniform mat4x2 param0;
+uniform mat4x2 param1;
+uniform mat4x2 param2;
+uniform mat4x2 param3;
 
 uniform float t;
 
@@ -27,34 +23,20 @@ vec2 comp(vec2 a) {
 
 void main() {
     // Parameter Bezier
-    vec4 paramR4 = (1.0 - t) * paramR0 + t * paramR1;
-    vec4 paramI4 = (1.0 - t) * paramI0 + t * paramI1;
+    mat4x2 param4 = (1.0f - t) * param0 + t * param1;
+    mat4x2 param5 = (1.0f - t) * param1 + t * param2;
+    mat4x2 param6 = (1.0f - t) * param2 + t * param3;
 
-    vec4 paramR5 = (1.0 - t) * paramR1 + t * paramR2;
-    vec4 paramI5 = (1.0 - t) * paramI1 + t * paramI2;
+    mat4x2 param7 = (1.0f - t) * param4 + t * param5;
+    mat4x2 param8 = (1.0f - t) * param5 + t * param6;
 
-    vec4 paramR6 = (1.0 - t) * paramR2 + t * paramR3;
-    vec4 paramI6 = (1.0 - t) * paramI2 + t * paramI3;
-
-    // 
-
-    vec4 paramR7 = (1.0 - t) * paramR4 + t * paramR5;
-    vec4 paramI7 = (1.0 - t) * paramI4 + t * paramI5;
-
-    vec4 paramR8 = (1.0 - t) * paramR5 + t * paramR6;
-    vec4 paramI8 = (1.0 - t) * paramI5 + t * paramI6;
-
-    // 
-
-    vec4 paramR9 = (1.0 - t) * paramR7 + t * paramR8;
-    vec4 paramI9 = (1.0 - t) * paramI7 + t * paramI8;
+    mat4x2 param9 = (1.0f - t) * param7 + t * param8;
 
     // Parameters
-
-    vec2 a = vec2(paramR9.x, paramI9.x);
-    vec2 b = vec2(paramR9.y, paramI9.y);
-    vec2 c = vec2(paramR9.z, paramI9.z);
-    vec2 d = vec2(paramR9.w, paramI9.w);
+    vec2 a = param9[0];
+    vec2 b = param9[1];
+    vec2 c = param9[2];
+    vec2 d = param9[3];
 
     // Hata-map
     vec2 z = vec2(0.0f);
