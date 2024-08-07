@@ -4,7 +4,7 @@ import { app, fps } from './main'
 import { humanReadable, resetParameter } from './utils'
 import { parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
-import { gaussianRandom } from './math'
+import { fitView, gaussianRandom } from './math'
 import { parameterTemplates } from './templates'
 
 type ModeType = 'control' | 'info' | ''
@@ -20,6 +20,7 @@ const setParameter = (t: any) => {
   parameter.value.dr = t.d.x
   parameter.value.di = t.d.y
   app.value.t = 2;
+  fitView()
 }
 
 const randomParameter = () => {
@@ -72,16 +73,14 @@ const copyImage = () => {
       <div v-if="mode === 'control'" id="controller">
         <fieldset>
           <legend>Animation</legend>
-          <!-- {{ app.pointerPos.x }}, {{ app.pointerPos.y }} -->
+          <!-- {{ app.pointerPos.x }}, {{ app.pointerPos.y }}<br>
+          {{ app.c.x }}, {{ app.c.y }} -->
           <span id="animation">
             <i v-if="!app.pause" class="bi bi-pause-fill pointer" @click="app.pause = true"></i>
             <i v-if="app.pause" class="bi bi-play-fill pointer" @click="app.pause = false"></i>
             <span style="float: right">
-              <i
-                class="bi bi-camera pointer"
-                style="padding-left: 0.2em; padding-right: 0.2em"
-                @click="copyImage"
-              ></i>
+              <!-- <i class="bi bi-arrows-fullscreen"></i> -->
+              <i class="bi bi-camera pointer" style="padding-left: 0.2em; padding-right: 0.2em" @click="copyImage"></i>
               <i class="bi bi-download pointer" @click="saveImage"></i>
             </span>
           </span>
@@ -106,24 +105,18 @@ const copyImage = () => {
                 <label>
                   {{ prop.name }}
                   <br />
-                  <input
-                    type="range"
-                    v-model.number="parameter[prop.name as keyof typeof parameter]"
-                    :step="prop.step"
-                    :min="prop.min"
-                    :max="prop.max"
-                    @dblclick="parameter[prop.name as keyof typeof parameter] = prop.default"
-                  />
+                  <input type="range" v-model.number="parameter[prop.name as keyof typeof parameter]" :step="prop.step"
+                    :min="prop.min" :max="prop.max"
+                    @dblclick="parameter[prop.name as keyof typeof parameter] = prop.default" />
                 </label>
-                <i
-                  class="bi bi-arrow-clockwise pointer"
-                  @click="parameter[prop.name as keyof typeof parameter] = prop.default"
-                ></i>
+                <i class="bi bi-arrow-clockwise pointer"
+                  @click="parameter[prop.name as keyof typeof parameter] = prop.default"></i>
                 <span style="float: right">
                   {{ humanReadable(parameter[prop.name as keyof typeof parameter]) }}
                 </span>
                 <br />
               </template>
+              <button @click="fitView">Fit view</button>
             </template>
           </fieldset>
         </template>

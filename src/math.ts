@@ -2,6 +2,9 @@
 // Liner algebra
 //================================
 
+import { app } from './main'
+import { parameter } from './parameters'
+
 export const vec = (x: number, y: number) => {
   return new Vec(x, y)
 }
@@ -151,4 +154,59 @@ export const gaussianRandom = (mean = 0, stdev = 1) => {
   const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
   // Transform to the desired mean and standard deviation:
   return z * stdev + mean
+}
+
+const cMul = (a: Vec, b: Vec) => {
+  return vec(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x)
+}
+
+const cComp = (a: Vec) => {
+  return vec(a.x, -a.y)
+}
+
+export const hataMap = (z: Vec, a: Vec, b: Vec, c: Vec, d: Vec, type: 0 | 1) => {
+  if (type === 0) {
+    return cMul(a, z).add(cMul(b, cComp(z)))
+  } else {
+    return cMul(c, vec(z.x - 1, z.y))
+      .add(cMul(d, vec(z.x - 1, -z.y)))
+      .add(vec(1.0, 0.0))
+  }
+}
+
+export const getHataMapRect = (z0: Vec, a: Vec, b: Vec, c: Vec, d: Vec, n: number) => {
+  let left = Infinity
+  let top = -Infinity
+  let right = -Infinity
+  let bottom = Infinity
+  const f = (z: Vec, depth: number) => {
+    if (depth === n) {
+      left = Math.min(z.x, left)
+      top = Math.max(z.y, top)
+      right = Math.max(z.x, right)
+      bottom = Math.min(z.y, bottom)
+    } else {
+      const z1 = hataMap(z, a, b, c, d, 0)
+      const z2 = hataMap(z, a, b, c, d, 1)
+      f(z1, depth + 1)
+      f(z2, depth + 1)
+    }
+  }
+  f(z0, 0)
+  return [left, top, right, bottom]
+}
+
+export const fitView = () => {
+  const a = vec(parameter.value.ar, parameter.value.ai)
+  const b = vec(parameter.value.br, parameter.value.bi)
+  const c = vec(parameter.value.cr, parameter.value.ci)
+  const d = vec(parameter.value.dr, parameter.value.di)
+  const [left, top, right, bottom] = getHataMapRect(vec(0, 0), a, b, c, d, 10)
+
+  app.value.c = vec((left + right) / 2, (top + bottom) / 2)
+
+  const width = right - left
+  // TODO:
+  // const height = top - bottom
+  parameter.value.scale = app.value.width / width
 }

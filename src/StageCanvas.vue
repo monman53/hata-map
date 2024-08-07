@@ -6,14 +6,14 @@ export const canvas = ref()
 const getPositionOnSvg = (e: any) => {
   const rect = canvas.value.getBoundingClientRect()
   const x = e.clientX - rect.left
-  const y= rect.bottom - e.clientY
+  const y = rect.bottom - e.clientY
   return vec(x, y)
 }
 
 const getPositionOnSvgApp = (e: any) => {
   const m = getPositionOnSvg(e)
-  const x = (m.x - app.value.width / 2) / parameter.value.scale*2 + app.value.c.x
-  const y = (m.y - app.value.height/ 2) / parameter.value.scale*2 + app.value.c.y
+  const x = (m.x - app.value.width / 2) / parameter.value.scale * 2 + app.value.c.x
+  const y = (m.y - app.value.height / 2) / parameter.value.scale * 2 + app.value.c.y
   return vec(x, y)
 }
 
@@ -130,6 +130,7 @@ onMounted(() => {
   const mainProgLocs = {
     n: gl.getUniformLocation(mainProgram, 'n'),
     scale: gl.getUniformLocation(mainProgram, 'scale'),
+    pointSize: gl.getUniformLocation(mainProgram, 'pointSize'),
     center: gl.getUniformLocation(mainProgram, 'center'),
     t: gl.getUniformLocation(mainProgram, 't'),
     param0: gl.getUniformLocation(mainProgram, 'param0'),
@@ -250,38 +251,37 @@ onMounted(() => {
     //--------------------------------
     // Draw
     //--------------------------------
-    if (!app.value.pause) {
-      // Clear canvas
-      gl.useProgram(mainProgram)
+    // Clear canvas
+    gl.useProgram(mainProgram)
 
-      gl.uniform1i(mainProgLocs.n, parameter.value.n)
-      gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
-      gl.uniform2f(mainProgLocs.center, app.value.c.x, app.value.c.y)
-      gl.uniform1f(mainProgLocs.t, app.value.t)
-      gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [a[0].x, a[0].y, b[0].x, b[0].y, c[0].x, c[0].y, d[0].x, d[0].y])
-      gl.uniformMatrix4x2fv(mainProgLocs.param1, false, [a[1].x, a[1].y, b[1].x, b[1].y, c[1].x, c[1].y, d[1].x, d[1].y])
-      gl.uniformMatrix4x2fv(mainProgLocs.param2, false, [a[2].x, a[2].y, b[2].x, b[2].y, c[2].x, c[2].y, d[2].x, d[2].y])
-      gl.uniformMatrix4x2fv(mainProgLocs.param3, false, [a[3].x, a[3].y, b[3].x, b[3].y, c[3].x, c[3].y, d[3].x, d[3].y])
-      gl.uniform3f(
-        mainProgLocs.hsl,
-        parameter.value.hue,
-        parameter.value.saturation,
-        parameter.value.lightness
-      )
-      gl.uniform1f(mainProgLocs.alpha, parameter.value.alpha)
-      gl.uniform2i(mainProgLocs.canvasSize, app.value.width, app.value.height)
+    gl.uniform1i(mainProgLocs.n, parameter.value.n)
+    gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
+    gl.uniform1f(mainProgLocs.pointSize, parameter.value.pointSize)
+    gl.uniform2f(mainProgLocs.center, app.value.c.x, app.value.c.y)
+    gl.uniform1f(mainProgLocs.t, app.value.t)
+    gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [a[0].x, a[0].y, b[0].x, b[0].y, c[0].x, c[0].y, d[0].x, d[0].y])
+    gl.uniformMatrix4x2fv(mainProgLocs.param1, false, [a[1].x, a[1].y, b[1].x, b[1].y, c[1].x, c[1].y, d[1].x, d[1].y])
+    gl.uniformMatrix4x2fv(mainProgLocs.param2, false, [a[2].x, a[2].y, b[2].x, b[2].y, c[2].x, c[2].y, d[2].x, d[2].y])
+    gl.uniformMatrix4x2fv(mainProgLocs.param3, false, [a[3].x, a[3].y, b[3].x, b[3].y, c[3].x, c[3].y, d[3].x, d[3].y])
+    gl.uniform3f(
+      mainProgLocs.hsl,
+      parameter.value.hue,
+      parameter.value.saturation,
+      parameter.value.lightness
+    )
+    gl.uniform1f(mainProgLocs.alpha, parameter.value.alpha)
+    gl.uniform2i(mainProgLocs.canvasSize, app.value.width, app.value.height)
 
-      gl.viewport(0, 0, app.value.width, app.value.height)
+    gl.viewport(0, 0, app.value.width, app.value.height)
 
-      // gl.blendFunc(gl.SRC_ALPHA, gl.DST_ALPHA)
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
-      gl.enable(gl.BLEND)
+    gl.blendFunc(gl.SRC_ALPHA, gl.DST_ALPHA)
+    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+    gl.enable(gl.BLEND)
 
-      gl.clearColor(0, 0, 0, 1)
-      gl.clear(gl.COLOR_BUFFER_BIT)
+    gl.clearColor(0, 0, 0, 1)
+    gl.clear(gl.COLOR_BUFFER_BIT)
 
-      gl.drawArrays(gl.POINTS, 0, 1 << parameter.value.n)
-    }
+    gl.drawArrays(gl.POINTS, 0, 1 << parameter.value.n)
 
     // Next frame
     window.requestAnimationFrame(render)

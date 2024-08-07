@@ -3,6 +3,7 @@ import { ref } from 'vue'
 export const parameter = ref({
   n: 10,
   scale: 0,
+  pointSize: 0.5,
   timeScale: 0.5,
   moveScale: 1.0,
   hue: 0.3,
@@ -40,10 +41,17 @@ export const parameterProps = ref([
         step: 1
       },
       {
-        name: 'scale',
-        default: window.innerWidth,
+        name: 'pointSize',
+        default: 0.5,
         min: 0,
-        max: 1 << 4,
+        max: 2,
+        step: 0.001
+      },
+      {
+        name: 'scale',
+        default: Math.min(window.innerWidth, window.innerHeight),
+        min: 0,
+        max: 1 << 14,
         step: 1
       },
       {
@@ -57,7 +65,7 @@ export const parameterProps = ref([
         name: 'moveScale',
         default: 1.0,
         min: 0,
-        max: 128,
+        max: 32,
         step: 0.001
       },
       {

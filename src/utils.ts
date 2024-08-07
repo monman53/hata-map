@@ -1,3 +1,4 @@
+import { fitView } from './math'
 import { parameter, parameterProps } from './parameters'
 
 export const humanReadable = (x: number) => {
@@ -16,6 +17,8 @@ export const resetAllParameter = () => {
       parameter.value[prop.name as keyof typeof parameter.value] = prop.default
     }
   }
+
+  fitView()
 }
 
 export const randomParameter = () => {
