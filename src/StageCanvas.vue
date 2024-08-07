@@ -143,37 +143,43 @@ onMounted(() => {
     }
     appThen = time
 
+    const aStd = vec(parameter.value.arStd, parameter.value.aiStd)
+    const bStd = vec(parameter.value.brStd, parameter.value.biStd)
+    const cStd = vec(parameter.value.crStd, parameter.value.ciStd)
+    const dStd = vec(parameter.value.drStd, parameter.value.diStd)
+    const moveScale = parameter.value.moveScale
+
     a[2] = vec(
-      parameter.value.ar + aStd2.x * parameter.value.arStd * parameter.value.moveScale,
-      parameter.value.ai + aStd2.y * parameter.value.aiStd * parameter.value.moveScale
+      parameter.value.ar + aStd2.x * aStd.x * moveScale,
+      parameter.value.ai + aStd2.y * aStd.y * moveScale
     )
     b[2] = vec(
-      parameter.value.br + bStd2.x * parameter.value.brStd * parameter.value.moveScale,
-      parameter.value.bi + bStd2.y * parameter.value.biStd * parameter.value.moveScale
+      parameter.value.br + bStd2.x * bStd.x * moveScale,
+      parameter.value.bi + bStd2.y * bStd.y * moveScale
     )
     c[2] = vec(
-      parameter.value.cr + cStd2.x * parameter.value.crStd * parameter.value.moveScale,
-      parameter.value.ci + cStd2.y * parameter.value.ciStd * parameter.value.moveScale
+      parameter.value.cr + cStd2.x * cStd.x * moveScale,
+      parameter.value.ci + cStd2.y * cStd.y * moveScale
     )
     d[2] = vec(
-      parameter.value.dr + dStd2.x * parameter.value.drStd * parameter.value.moveScale,
-      parameter.value.di + dStd2.y * parameter.value.diStd * parameter.value.moveScale
+      parameter.value.dr + dStd2.x * dStd.x * moveScale,
+      parameter.value.di + dStd2.y * dStd.y * moveScale
     )
     a[3] = vec(
-      parameter.value.ar + aStd3.x * parameter.value.arStd * parameter.value.moveScale,
-      parameter.value.ai + aStd3.y * parameter.value.aiStd * parameter.value.moveScale
+      parameter.value.ar + aStd3.x * aStd.x * moveScale,
+      parameter.value.ai + aStd3.y * aStd.y * moveScale
     )
     b[3] = vec(
-      parameter.value.br + bStd3.x * parameter.value.brStd * parameter.value.moveScale,
-      parameter.value.bi + bStd3.y * parameter.value.biStd * parameter.value.moveScale
+      parameter.value.br + bStd3.x * bStd.x * moveScale,
+      parameter.value.bi + bStd3.y * bStd.y * moveScale
     )
     c[3] = vec(
-      parameter.value.cr + cStd3.x * parameter.value.crStd * parameter.value.moveScale,
-      parameter.value.ci + cStd3.y * parameter.value.ciStd * parameter.value.moveScale
+      parameter.value.cr + cStd3.x * cStd.x * moveScale,
+      parameter.value.ci + cStd3.y * cStd.y * moveScale
     )
     d[3] = vec(
-      parameter.value.dr + dStd3.x * parameter.value.drStd * parameter.value.moveScale,
-      parameter.value.di + dStd3.y * parameter.value.diStd * parameter.value.moveScale
+      parameter.value.dr + dStd3.x * dStd.x * moveScale,
+      parameter.value.di + dStd3.y * dStd.y * moveScale
     )
 
     //--------------------------------
