@@ -4,7 +4,7 @@ import { createApp, ref } from 'vue'
 import App from './App.vue'
 import { resetAllParameter } from './utils'
 import { vec } from './math'
-import { parameter, parameterProps } from './parameters'
+import { parameterProps } from './parameters'
 
 export const app = ref({
   width: window.innerWidth,

@@ -3,7 +3,7 @@
 //================================
 
 import { app } from './main'
-import { displayParameter, parameter } from './parameters'
+import { parameter } from './parameters'
 
 export const vec = (x: number, y: number) => {
   return new Vec(x, y)
