@@ -90,19 +90,24 @@ const getParam = () => {
   return parameter.value[props.prop.name as keyof typeof parameter.value]
 }
 
-const visible = ref(true)
+const visible = ref(false)
+
+const isZero = computed(() => {
+  const param = getParam()
+  return param.x === 0 && param.y === 0
+})
 </script>
 
 <template>
   <fieldset>
     <legend>
       <span class="pointer" @click="visible = !visible">
-        <i class="bi bi-caret-down-fill" v-if="visible"></i>
-        <i class="bi bi-caret-right-fill" v-if="!visible"></i>
+        <i class="bi bi-caret-down-fill" v-if="visible || !isZero"></i>
+        <i class="bi bi-caret-right-fill" v-if="!(visible || !isZero)"></i>
         {{ prop.name }}
       </span>
     </legend>
-    <template v-if="visible">
+    <template v-if="visible || !isZero">
       <svg
         ref="svg"
         :width

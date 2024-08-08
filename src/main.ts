@@ -26,7 +26,7 @@ export const app = ref({
     }
   ],
   randomHistoryPtr: 1,
-  randomHistoryMax: 32
+  randomHistoryMax: 512
 })
 
 export const fps = ref(0)

@@ -32,9 +32,8 @@ export const randomParameter = () => {
 
   params.forEach((param) => {
     const theta = Math.random() * 2 * Math.PI
-    const radius = Math.abs(
-      gaussianRandom(displayParameter.value.randomR, displayParameter.value.randomStd)
-    )
+    const radius =
+      displayParameter.value.randomR + Math.abs(gaussianRandom(0, displayParameter.value.randomStd))
     const n = vecRad(theta).mul(radius)
     param.x = n.x
     param.y = n.y
@@ -69,11 +68,11 @@ const nextHistory = () => {
   setParameter(app.value.randomHistory[app.value.randomHistoryPtr])
 }
 
-const pauseResume = () =>{
-    if (!app.value.pause && app.value.t < 0.5) {
-      prevHistory()
-    }
-    app.value.pause = !app.value.pause
+const pauseResume = () => {
+  if (!app.value.pause && app.value.t < 0.5) {
+    prevHistory()
+  }
+  app.value.pause = !app.value.pause
 }
 
 window.addEventListener('keydown', (e: any) => {

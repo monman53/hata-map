@@ -33,9 +33,9 @@ export const displayProps = ref([
     visible: true,
     props: [
       { name: 'n', default: 19, min: 0, max: 32, step: 1 },
+      { name: 'hue', default: 0.25, min: 0, max: 1, step: 0.001 },
       { name: 'randomR', default: 0.65, min: 0.5, max: 1.0, step: 0.0001 },
-      { name: 'randomStd', default: 0.01, min: 0, max: 0.3, step: 0.0001 },
-      { name: 'pointSize', default: 0.5, min: 0, max: 2, step: 0.001 },
+      { name: 'randomStd', default: 0.05, min: 0, max: 0.3, step: 0.0001 },
       { // Not visible
         name: 'prevScale',
         default: Math.min(window.innerWidth, window.innerHeight),
@@ -50,9 +50,9 @@ export const displayProps = ref([
         max: 1 << 14,
         step: 1
       },
+      { name: 'pointSize', default: 0.5, min: 0, max: 2, step: 0.001 },
       { name: 'timeScale', default: 0.4, min: 0, max: 3, step: 0.001 },
       { name: 'moveScale', default: 0.0, min: 0, max: 32, step: 0.001 },
-      { name: 'hue', default: 0.25, min: 0, max: 1, step: 0.001 },
       { name: 'saturation', default: 1.0, min: 0, max: 1, step: 0.001 },
       { name: 'lightness', default: 0.9, min: 0, max: 1, step: 0.001 },
       { name: 'alpha', default: 1.0, min: 0, max: 1, step: 0.001 }
@@ -68,10 +68,10 @@ export const parameterProps = ref([
       { name: 'b', default: vec(0, 0), min: -1, max: 1, step: 0.001 },
       { name: 'c', default: vec(0, 0), min: -1, max: 1, step: 0.001 },
       { name: 'd', default: vec(0.65, 0), min: -1, max: 1, step: 0.001 },
-      { name: 'aStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
-      { name: 'bStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
-      { name: 'cStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
-      { name: 'dStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
+      // { name: 'aStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
+      // { name: 'bStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
+      // { name: 'cStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
+      // { name: 'dStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
     ]
   }
 ])
