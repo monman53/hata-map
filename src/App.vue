@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import StageCanvas from './StageCanvas.vue'
 import StageUI from './StageUI.vue'
 import { app } from './main'
+import Info from './InfoItem.vue';
 
 const heightPx = computed(() => {
   return app.value.height + 'px'
@@ -21,6 +22,9 @@ const widthPx = computed(() => {
     <div id="svg">
       <StageUI></StageUI>
     </div>
+    <div id="info">
+      <Info></Info>
+    </div>
   </div>
 </template>
 
@@ -30,10 +34,15 @@ const widthPx = computed(() => {
 }
 
 #canvas,
-#svg {
+#svg,
+#info {
   overflow: hidden;
   position: absolute;
   height: v-bind(heightPx);
   /* width: v-bind(widthPx); */
+}
+
+#info {
+  right: 0;
 }
 </style>

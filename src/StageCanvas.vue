@@ -39,6 +39,7 @@ const setMoveHandlerWithM0 = (h: any, m: Vec) => {
 const svgMoveHandler = (e: any) => {
   e.preventDefault()
   app.value.pointerPos = getPositionOnSvgApp(e)
+  app.value.mousePos = getPositionOnSvg(e)
   if (moveHandlerWithM0 !== null) {
     preventDefaultAndStopPropagation(e)
     const d = getPositionDiffOnSvgApp(e, m0)

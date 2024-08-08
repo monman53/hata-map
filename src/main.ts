@@ -15,6 +15,7 @@ export const app = ref({
   c: vec(0, 0),
   prevC: vec(0, 0),
   pointerPos: vec(0, 0),
+  mousePos: vec(0, 0),
   randomAnimation: false,
   // TODO: Better way
   randomHistory: [

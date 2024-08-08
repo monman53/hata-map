@@ -122,7 +122,7 @@ const copyImage = () => {
 </script>
 
 <template>
-  <div id="base">
+  <div id="base" v-if="app.mousePos.x < app.width / 2">
     <div class="mode-select">
       <div>
         <i v-if="mode === 'control'" class="bi bi-gear-fill pointer" @click="mode = ''" />
