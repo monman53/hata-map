@@ -76,7 +76,7 @@ import { app, fps } from './main'
 import mainVS from './glsl/main.vert?raw'
 import mainFS from './glsl/main.frag?raw'
 import { displayParameter, parameter } from './parameters'
-import { fitView, gaussianRandom, Vec, vec } from './math'
+import { gaussianRandom, Vec, vec } from './math'
 import { randomParameter } from './StageUI.vue'
 
 //--------------------------------
@@ -209,9 +209,12 @@ onMounted(() => {
         cStd3 = vec(gaussianRandom(), gaussianRandom())
         dStd3 = vec(gaussianRandom(), gaussianRandom())
 
-        // displayParameter.value.prevScale = displayParameter.value.scale
-        // app.value.prevC = app.value.c
-        randomParameter()
+        if (app.value.randomAnimation) {
+          randomParameter()
+        } else {
+          displayParameter.value.prevScale = displayParameter.value.scale
+          app.value.prevC = app.value.c
+        }
       }
     }
     appThen = time

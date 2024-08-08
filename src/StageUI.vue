@@ -7,20 +7,23 @@ export const randomParameter = () => {
 
   let params = []
   const rand = Math.random()
-  if (rand < 1 / 3) {
+  if (rand < 1 / 4) {
+    params.push(parameter.value.a)
+    params.push(parameter.value.c)
+  } else if (rand < 2 / 4) {
     params.push(parameter.value.a)
     params.push(parameter.value.d)
-  } else if (rand < 2 / 3) {
+  } else if (rand < 3 / 4) {
     params.push(parameter.value.b)
     params.push(parameter.value.c)
   } else {
-    params.push(parameter.value.a)
-    params.push(parameter.value.c)
+    params.push(parameter.value.b)
+    params.push(parameter.value.d)
   }
 
   params.forEach((param) => {
     const theta = Math.random() * 2 * Math.PI
-    const radius = gaussianRandom(0.65, 0.0)
+    const radius = Math.abs(gaussianRandom(0.65, 0.1))
     // const radius = gaussianRandom(0.9, 0)
     const n = vecRad(theta).mul(radius)
     param.x = n.x
@@ -107,6 +110,10 @@ const copyImage = () => {
           </span>
           <br />
           FPS: {{ humanReadable(fps) }}<br />
+          <label>
+            <input type="checkbox" v-model="app.randomAnimation" />
+            Random parameter
+          </label>
         </fieldset>
 
         <!-- Display parameters -->
