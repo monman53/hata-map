@@ -223,8 +223,6 @@ export const fitView = () => {
   const width = right - left
   const height = top - bottom
 
-  app.value.t = 0
-
   displayParameter.value.prevScale = displayParameter.value.scale
   const aspect = app.value.width / app.value.height
   const nextAspect = width / height

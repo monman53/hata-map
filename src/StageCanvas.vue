@@ -185,7 +185,8 @@ onMounted(() => {
     //--------------------------------
     // Update curve
     //--------------------------------
-    if (!app.value.pause) {
+    // if (!app.value.pause) {
+    {
       const dt = time - appThen
       app.value.t += (dt * displayParameter.value.timeScale) / 300
       // Update
@@ -209,11 +210,12 @@ onMounted(() => {
         cStd3 = vec(gaussianRandom(), gaussianRandom())
         dStd3 = vec(gaussianRandom(), gaussianRandom())
 
-        if (app.value.randomAnimation) {
-          randomParameter()
-        } else {
+        // if (app.value.randomAnimation) {
+        if (app.value.pause) {
           displayParameter.value.prevScale = displayParameter.value.scale
           app.value.prevC = app.value.c
+        } else {
+          randomParameter()
         }
       }
     }

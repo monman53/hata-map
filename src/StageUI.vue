@@ -1,4 +1,13 @@
 <script lang="ts">
+const setParameter = (t: any) => {
+  parameter.value.a = t.a.copy()
+  parameter.value.b = t.b.copy()
+  parameter.value.c = t.c.copy()
+  parameter.value.d = t.d.copy()
+  app.value.t = 0
+  fitView()
+}
+
 export const randomParameter = () => {
   parameter.value.a = vec(0, 0)
   parameter.value.b = vec(0, 0)
@@ -30,6 +39,7 @@ export const randomParameter = () => {
     param.y = n.y
   })
 
+  app.value.t = 0
   fitView()
 }
 </script>
@@ -46,14 +56,6 @@ import ParameterController from './ParameterController.vue'
 
 type ModeType = 'control' | 'info' | ''
 const mode: Ref<ModeType> = ref('')
-
-const setParameter = (t: any) => {
-  parameter.value.a = t.a.copy()
-  parameter.value.b = t.b.copy()
-  parameter.value.c = t.c.copy()
-  parameter.value.d = t.d.copy()
-  fitView()
-}
 
 const saveImage = () => {
   const link = document.createElement('a')
@@ -92,7 +94,7 @@ const copyImage = () => {
       <div v-if="mode === 'control'" id="controller">
         <!-- Animation controller -->
         <fieldset>
-          <legend>Animation</legend>
+          <legend>Random Animation</legend>
           <!-- {{ app.pointerPos.x }}, {{ app.pointerPos.y }}<br>
           {{ app.c.x }}, {{ app.c.y }} -->
           <span id="animation">
@@ -110,10 +112,10 @@ const copyImage = () => {
           </span>
           <br />
           FPS: {{ humanReadable(fps) }}<br />
-          <label>
+          <!-- <label>
             <input type="checkbox" v-model="app.randomAnimation" />
             Random parameter
-          </label>
+          </label> -->
         </fieldset>
 
         <!-- Display parameters -->
