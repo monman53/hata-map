@@ -69,12 +69,22 @@ const nextHistory = () => {
   setParameter(app.value.randomHistory[app.value.randomHistoryPtr])
 }
 
-window.addEventListener('keydown', (e: any) => {
-  if (e.key === ' ') {
-    app.value.pause = !app.value.pause
-    if (app.value.t < 0.5) {
+const pauseResume = () =>{
+    if (!app.value.pause && app.value.t < 0.5) {
       prevHistory()
     }
+    app.value.pause = !app.value.pause
+}
+
+window.addEventListener('keydown', (e: any) => {
+  if (e.key === ' ') {
+    pauseResume()
+  }
+  if (e.key === 'ArrowLeft') {
+    prevHistory()
+  }
+  if (e.key === 'ArrowRight') {
+    nextHistory()
   }
   if (e.key === 'f') {
     fitView()
@@ -137,8 +147,8 @@ const copyImage = () => {
           {{ app.c.x }}, {{ app.c.y }} -->
           <span id="animation">
             <i class="bi bi-skip-backward-fill pointer" @click="prevHistory"></i>
-            <i v-if="!app.pause" class="bi bi-pause-fill pointer" @click="app.pause = true"></i>
-            <i v-if="app.pause" class="bi bi-play-fill pointer" @click="app.pause = false"></i>
+            <i v-if="!app.pause" class="bi bi-pause-fill pointer" @click="pauseResume"></i>
+            <i v-if="app.pause" class="bi bi-play-fill pointer" @click="pauseResume"></i>
             <i class="bi bi-skip-forward-fill pointer" @click="nextHistory"></i>
             <span style="float: right">
               <!-- <i class="bi bi-arrows-fullscreen"></i> -->
