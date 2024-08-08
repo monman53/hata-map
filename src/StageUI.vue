@@ -6,6 +6,7 @@ import { displayParameter, displayProps, parameter, parameterProps } from './par
 import { canvas } from './StageCanvas.vue'
 import { fitView, gaussianRandom, vec } from './math'
 import { parameterTemplates } from './templates'
+import ParameterController from './ParameterController.vue'
 
 type ModeType = 'control' | 'info' | ''
 const mode: Ref<ModeType> = ref('')
@@ -132,33 +133,7 @@ const copyImage = () => {
             </legend>
             <template v-if="category.visible">
               <template v-for="prop of category.props" :key="prop.name">
-                <!-- Real -->
-                <label>
-                  {{ prop.name }} real
-                  <br />
-                  <input type="range" v-model.number="parameter[prop.name as keyof typeof parameter].x"
-                    :step="prop.step" :min="prop.min" :max="prop.max"
-                    @dblclick="parameter[prop.name as keyof typeof parameter].x = prop.default.x" />
-                </label>
-                <i class="bi bi-arrow-clockwise pointer"
-                  @click="parameter[prop.name as keyof typeof parameter].x = prop.default.x"></i>
-                <span style="float: right">
-                  {{ humanReadable(parameter[prop.name as keyof typeof parameter].x) }}
-                </span>
-                <br />
-                <!-- Imag -->
-                <label>
-                  {{ prop.name }} imag
-                  <br />
-                  <input type="range" v-model.number="parameter[prop.name as keyof typeof parameter].y"
-                    :step="prop.step" :min="prop.min" :max="prop.max"
-                    @dblclick="parameter[prop.name as keyof typeof parameter].y = prop.default.y" />
-                </label>
-                <i class="bi bi-arrow-clockwise pointer"
-                  @click="parameter[prop.name as keyof typeof parameter].y = prop.default.y"></i>
-                <span style="float: right">
-                  {{ humanReadable(parameter[prop.name as keyof typeof parameter].y) }}
-                </span>
+                <ParameterController :prop></ParameterController>
                 <br />
               </template>
             </template>

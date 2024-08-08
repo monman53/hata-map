@@ -7,7 +7,7 @@ export const humanReadable = (x: number) => {
 
 export const resetParameter = (category: any) => {
   for (const prop of category.props) {
-    parameter.value[prop.name as keyof typeof parameter.value] = prop.default
+    parameter.value[prop.name as keyof typeof parameter.value] = prop.default.copy()
   }
 }
 
@@ -19,7 +19,7 @@ export const resetAllParameter = () => {
   }
   for (const category of parameterProps.value) {
     for (const prop of category.props) {
-      parameter.value[prop.name as keyof typeof parameter.value] = prop.default
+      parameter.value[prop.name as keyof typeof parameter.value] = prop.default.copy()
     }
   }
 
