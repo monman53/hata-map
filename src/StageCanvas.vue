@@ -194,14 +194,25 @@ onMounted(() => {
       if (app.value.t > 1.0 || app.value.pause) {
         app.value.t = app.value.t - Math.floor(app.value.t)
 
-        a[0] = a[3]
-        b[0] = b[3]
-        c[0] = c[3]
-        d[0] = d[3]
-        a[1] = a[3].add(a[3].sub(a[2]))
-        b[1] = b[3].add(b[3].sub(b[2]))
-        c[1] = c[3].add(c[3].sub(c[2]))
-        d[1] = d[3].add(d[3].sub(d[2]))
+        if (app.value.pause) {
+          a[0] = parameter.value.a
+          b[0] = parameter.value.b
+          c[0] = parameter.value.c
+          d[0] = parameter.value.d
+          a[1] = parameter.value.a
+          b[1] = parameter.value.b
+          c[1] = parameter.value.c
+          d[1] = parameter.value.d
+        } else {
+          a[0] = a[3]
+          b[0] = b[3]
+          c[0] = c[3]
+          d[0] = d[3]
+          a[1] = a[3].add(a[3].sub(a[2]))
+          b[1] = b[3].add(b[3].sub(b[2]))
+          c[1] = c[3].add(c[3].sub(c[2]))
+          d[1] = d[3].add(d[3].sub(d[2]))
+        }
         aStd2 = vec(gaussianRandom(), gaussianRandom())
         bStd2 = vec(gaussianRandom(), gaussianRandom())
         cStd2 = vec(gaussianRandom(), gaussianRandom())

@@ -81,6 +81,7 @@ const prevHistory = () => {
 const nextHistory = () => {
   app.value.pause = true
   app.value.randomHistoryPtr = Math.min(
+    app.value.randomHistory.length - 1,
     app.value.randomHistoryMax - 1,
     app.value.randomHistoryPtr + 1
   )
@@ -90,8 +91,9 @@ const nextHistory = () => {
 const pauseResume = () => {
   if (!app.value.pause && app.value.t < 0.5) {
     prevHistory()
+  } else {
+    app.value.pause = !app.value.pause
   }
-  app.value.pause = !app.value.pause
 }
 
 window.addEventListener('keydown', (e: any) => {
