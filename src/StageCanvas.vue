@@ -12,14 +12,14 @@ const getPositionOnSvg = (e: any) => {
 
 const getPositionOnSvgApp = (e: any) => {
   const m = getPositionOnSvg(e)
-  const x = (m.x - app.value.width / 2) / parameter.value.scale * 2 + app.value.c.x
-  const y = (m.y - app.value.height / 2) / parameter.value.scale * 2 + app.value.c.y
+  const x = (m.x - app.value.width / 2) / displayParameter.value.scale * 2 + app.value.c.x
+  const y = (m.y - app.value.height / 2) / displayParameter.value.scale * 2 + app.value.c.y
   return vec(x, y)
 }
 
 const getPositionDiffOnSvgApp = (e: any, m0: Vec) => {
   const m = getPositionOnSvg(e)
-  const d = m.inplaceSub(m0).inplaceDiv(parameter.value.scale / 2)
+  const d = m.inplaceSub(m0).inplaceDiv(displayParameter.value.scale / 2)
   return d
 }
 
@@ -56,7 +56,7 @@ const svgScaleHandler = (e: any) => {
   const scaleFactor = 1.1
   const r = e.deltaY > 0 ? scaleFactor : 1 / scaleFactor
   app.value.c = app.value.c.add(p.sub(app.value.c).mul(1 - r))
-  parameter.value.scale /= r
+  displayParameter.value.scale /= r
 }
 
 const moveStart = (e: any) => {
@@ -75,7 +75,7 @@ import { app, fps } from './main'
 // Shaders
 import mainVS from './glsl/main.vert?raw'
 import mainFS from './glsl/main.frag?raw'
-import { parameter } from './parameters'
+import { displayParameter, parameter } from './parameters'
 import { gaussianRandom, Vec, vec } from './math'
 
 //--------------------------------
@@ -148,10 +148,10 @@ onMounted(() => {
   let counter = 0
   let fpsThen = 0
   let appThen = 0
-  let a0 = vec(parameter.value.ar, parameter.value.ai)
-  let b0 = vec(parameter.value.br, parameter.value.bi)
-  let c0 = vec(parameter.value.cr, parameter.value.ci)
-  let d0 = vec(parameter.value.dr, parameter.value.di)
+  let a0 = parameter.value.a.copy()
+  let b0 = parameter.value.b.copy()
+  let c0 = parameter.value.c.copy()
+  let d0 = parameter.value.d.copy()
   let a = [a0, a0, a0, a0]
   let b = [b0, b0, b0, b0]
   let c = [c0, c0, c0, c0]
@@ -184,7 +184,7 @@ onMounted(() => {
     //--------------------------------
     if (!app.value.pause) {
       const dt = time - appThen
-      app.value.t += (dt * parameter.value.timeScale) / 300
+      app.value.t += (dt * displayParameter.value.timeScale) / 300
       // Update
       if (app.value.t > 1.0) {
         app.value.t = app.value.t - Math.floor(app.value.t)
@@ -209,43 +209,43 @@ onMounted(() => {
     }
     appThen = time
 
-    const aStd = vec(parameter.value.arStd, parameter.value.aiStd)
-    const bStd = vec(parameter.value.brStd, parameter.value.biStd)
-    const cStd = vec(parameter.value.crStd, parameter.value.ciStd)
-    const dStd = vec(parameter.value.drStd, parameter.value.diStd)
-    const moveScale = parameter.value.moveScale
+    const aStd = parameter.value.aStd
+    const bStd = parameter.value.bStd
+    const cStd = parameter.value.cStd
+    const dStd = parameter.value.dStd
+    const moveScale = displayParameter.value.moveScale
 
     a[2] = vec(
-      parameter.value.ar + aStd2.x * aStd.x * moveScale,
-      parameter.value.ai + aStd2.y * aStd.y * moveScale
+      parameter.value.a.x + aStd2.x * aStd.x * moveScale,
+      parameter.value.a.y + aStd2.y * aStd.y * moveScale
     )
     b[2] = vec(
-      parameter.value.br + bStd2.x * bStd.x * moveScale,
-      parameter.value.bi + bStd2.y * bStd.y * moveScale
+      parameter.value.b.x + bStd2.x * bStd.x * moveScale,
+      parameter.value.b.y + bStd2.y * bStd.y * moveScale
     )
     c[2] = vec(
-      parameter.value.cr + cStd2.x * cStd.x * moveScale,
-      parameter.value.ci + cStd2.y * cStd.y * moveScale
+      parameter.value.c.x + cStd2.x * cStd.x * moveScale,
+      parameter.value.c.y + cStd2.y * cStd.y * moveScale
     )
     d[2] = vec(
-      parameter.value.dr + dStd2.x * dStd.x * moveScale,
-      parameter.value.di + dStd2.y * dStd.y * moveScale
+      parameter.value.d.x + dStd2.x * dStd.x * moveScale,
+      parameter.value.d.y + dStd2.y * dStd.y * moveScale
     )
     a[3] = vec(
-      parameter.value.ar + aStd3.x * aStd.x * moveScale,
-      parameter.value.ai + aStd3.y * aStd.y * moveScale
+      parameter.value.a.x + aStd3.x * aStd.x * moveScale,
+      parameter.value.a.y + aStd3.y * aStd.y * moveScale
     )
     b[3] = vec(
-      parameter.value.br + bStd3.x * bStd.x * moveScale,
-      parameter.value.bi + bStd3.y * bStd.y * moveScale
+      parameter.value.b.x + bStd3.x * bStd.x * moveScale,
+      parameter.value.b.y + bStd3.y * bStd.y * moveScale
     )
     c[3] = vec(
-      parameter.value.cr + cStd3.x * cStd.x * moveScale,
-      parameter.value.ci + cStd3.y * cStd.y * moveScale
+      parameter.value.c.x + cStd3.x * cStd.x * moveScale,
+      parameter.value.c.y + cStd3.y * cStd.y * moveScale
     )
     d[3] = vec(
-      parameter.value.dr + dStd3.x * dStd.x * moveScale,
-      parameter.value.di + dStd3.y * dStd.y * moveScale
+      parameter.value.d.x + dStd3.x * dStd.x * moveScale,
+      parameter.value.d.y + dStd3.y * dStd.y * moveScale
     )
 
     //--------------------------------
@@ -254,9 +254,9 @@ onMounted(() => {
     // Clear canvas
     gl.useProgram(mainProgram)
 
-    gl.uniform1i(mainProgLocs.n, parameter.value.n)
-    gl.uniform1f(mainProgLocs.scale, parameter.value.scale)
-    gl.uniform1f(mainProgLocs.pointSize, parameter.value.pointSize)
+    gl.uniform1i(mainProgLocs.n, displayParameter.value.n)
+    gl.uniform1f(mainProgLocs.scale, displayParameter.value.scale)
+    gl.uniform1f(mainProgLocs.pointSize, displayParameter.value.pointSize)
     gl.uniform2f(mainProgLocs.center, app.value.c.x, app.value.c.y)
     gl.uniform1f(mainProgLocs.t, app.value.t)
     gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [a[0].x, a[0].y, b[0].x, b[0].y, c[0].x, c[0].y, d[0].x, d[0].y])
@@ -265,11 +265,11 @@ onMounted(() => {
     gl.uniformMatrix4x2fv(mainProgLocs.param3, false, [a[3].x, a[3].y, b[3].x, b[3].y, c[3].x, c[3].y, d[3].x, d[3].y])
     gl.uniform3f(
       mainProgLocs.hsl,
-      parameter.value.hue,
-      parameter.value.saturation,
-      parameter.value.lightness
+      displayParameter.value.hue,
+      displayParameter.value.saturation,
+      displayParameter.value.lightness
     )
-    gl.uniform1f(mainProgLocs.alpha, parameter.value.alpha)
+    gl.uniform1f(mainProgLocs.alpha, displayParameter.value.alpha)
     gl.uniform2i(mainProgLocs.canvasSize, app.value.width, app.value.height)
 
     gl.viewport(0, 0, app.value.width, app.value.height)
@@ -281,7 +281,7 @@ onMounted(() => {
     gl.clearColor(0, 0, 0, 1)
     gl.clear(gl.COLOR_BUFFER_BIT)
 
-    gl.drawArrays(gl.POINTS, 0, 1 << parameter.value.n)
+    gl.drawArrays(gl.POINTS, 0, 1 << displayParameter.value.n)
 
     // Next frame
     window.requestAnimationFrame(render)

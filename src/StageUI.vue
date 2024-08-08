@@ -2,38 +2,30 @@
 import { ref, type Ref } from 'vue'
 import { app, fps } from './main'
 import { humanReadable, resetParameter } from './utils'
-import { parameter, parameterProps } from './parameters'
+import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
-import { fitView, gaussianRandom } from './math'
+import { fitView, gaussianRandom, vec } from './math'
 import { parameterTemplates } from './templates'
 
 type ModeType = 'control' | 'info' | ''
 const mode: Ref<ModeType> = ref('')
 
 const setParameter = (t: any) => {
-  parameter.value.ar = t.a.x
-  parameter.value.ai = t.a.y
-  parameter.value.br = t.b.x
-  parameter.value.bi = t.b.y
-  parameter.value.cr = t.c.x
-  parameter.value.ci = t.c.y
-  parameter.value.dr = t.d.x
-  parameter.value.di = t.d.y
-  app.value.t = 2;
+  parameter.value.a = t.a.copy()
+  parameter.value.b = t.b.copy()
+  parameter.value.c = t.c.copy()
+  parameter.value.d = t.d.copy()
+  app.value.t = 2
   fitView()
 }
 
 const randomParameter = () => {
   const mean = 0
   const std = 0.4
-  parameter.value.ar = gaussianRandom(mean, std)
-  parameter.value.ai = gaussianRandom(mean, std)
-  parameter.value.br = gaussianRandom(mean, std)
-  parameter.value.bi = gaussianRandom(mean, std)
-  parameter.value.cr = gaussianRandom(mean, std)
-  parameter.value.ci = gaussianRandom(mean, std)
-  parameter.value.dr = gaussianRandom(mean, std)
-  parameter.value.di = gaussianRandom(mean, std)
+  parameter.value.a = vec(gaussianRandom(mean, std), gaussianRandom(mean, std))
+  parameter.value.b = vec(gaussianRandom(mean, std), gaussianRandom(mean, std))
+  parameter.value.c = vec(gaussianRandom(mean, std), gaussianRandom(mean, std))
+  parameter.value.d = vec(gaussianRandom(mean, std), gaussianRandom(mean, std))
 }
 
 const saveImage = () => {
@@ -87,7 +79,7 @@ const copyImage = () => {
           <br />
           FPS: {{ humanReadable(fps) }}<br />
         </fieldset>
-        <template v-for="category of parameterProps" :key="category.name">
+        <template v-for="category of displayProps" :key="category.name">
           <fieldset>
             <legend>
               <span class="pointer" @click="category.visible = !category.visible">
@@ -105,14 +97,14 @@ const copyImage = () => {
                 <label>
                   {{ prop.name }}
                   <br />
-                  <input type="range" v-model.number="parameter[prop.name as keyof typeof parameter]" :step="prop.step"
+                  <input type="range" v-model.number="displayParameter[prop.name as keyof typeof displayParameter]" :step="prop.step"
                     :min="prop.min" :max="prop.max"
-                    @dblclick="parameter[prop.name as keyof typeof parameter] = prop.default" />
+                    @dblclick="displayParameter[prop.name as keyof typeof displayParameter] = prop.default" />
                 </label>
                 <i class="bi bi-arrow-clockwise pointer"
-                  @click="parameter[prop.name as keyof typeof parameter] = prop.default"></i>
+                  @click="displayParameter[prop.name as keyof typeof displayParameter] = prop.default"></i>
                 <span style="float: right">
-                  {{ humanReadable(parameter[prop.name as keyof typeof parameter]) }}
+                  {{ humanReadable(displayParameter[prop.name as keyof typeof displayParameter]) }}
                 </span>
                 <br />
               </template>

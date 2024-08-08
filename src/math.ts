@@ -3,7 +3,7 @@
 //================================
 
 import { app } from './main'
-import { parameter } from './parameters'
+import { displayParameter, parameter } from './parameters'
 
 export const vec = (x: number, y: number) => {
   return new Vec(x, y)
@@ -197,10 +197,10 @@ export const getHataMapRect = (z0: Vec, a: Vec, b: Vec, c: Vec, d: Vec, n: numbe
 }
 
 export const fitView = () => {
-  const a = vec(parameter.value.ar, parameter.value.ai)
-  const b = vec(parameter.value.br, parameter.value.bi)
-  const c = vec(parameter.value.cr, parameter.value.ci)
-  const d = vec(parameter.value.dr, parameter.value.di)
+  const a = parameter.value.a
+  const b = parameter.value.b
+  const c = parameter.value.c
+  const d = parameter.value.d
   const [left, top, right, bottom] = getHataMapRect(vec(0, 0), a, b, c, d, 10)
 
   app.value.c = vec((left + right) / 2, (top + bottom) / 2)
@@ -208,5 +208,5 @@ export const fitView = () => {
   const width = right - left
   // TODO:
   // const height = top - bottom
-  parameter.value.scale = app.value.width / width
+  displayParameter.value.scale = app.value.width / width
 }
