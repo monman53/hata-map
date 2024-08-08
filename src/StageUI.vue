@@ -42,6 +42,12 @@ export const randomParameter = () => {
   app.value.t = 0
   fitView()
 }
+
+window.addEventListener('keydown', (e: any) => {
+  if (e.key === ' ') {
+    app.value.pause = !app.value.pause
+  }
+})
 </script>
 
 <script setup lang="ts">
