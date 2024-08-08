@@ -1,4 +1,4 @@
-import { fitView, vec } from './math'
+import { fitView, gaussianRandom, vec, vecRad } from './math'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 
 export const humanReadable = (x: number) => {
@@ -24,15 +24,4 @@ export const resetAllParameter = () => {
   }
 
   fitView()
-}
-
-export const randomParameter = () => {
-  for (const category of parameterProps.value) {
-    for (const prop of category.props) {
-      parameter.value[prop.name as keyof typeof parameter.value] = vec(
-        prop.min + Math.random() * (prop.max - prop.min),
-        prop.min + Math.random() * (prop.max - prop.min)
-      )
-    }
-  }
 }

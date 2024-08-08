@@ -4,7 +4,7 @@ import { app, fps } from './main'
 import { humanReadable, resetParameter } from './utils'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
-import { fitView, gaussianRandom, vec } from './math'
+import { fitView, gaussianRandom, vec, vecRad } from './math'
 import { parameterTemplates } from './templates'
 import ParameterController from './ParameterController.vue'
 
@@ -21,12 +21,29 @@ const setParameter = (t: any) => {
 }
 
 const randomParameter = () => {
-  const mean = 0
-  const std = 0.4
-  parameter.value.a = vec(gaussianRandom(mean, std), gaussianRandom(mean, std))
-  parameter.value.b = vec(gaussianRandom(mean, std), gaussianRandom(mean, std))
-  parameter.value.c = vec(gaussianRandom(mean, std), gaussianRandom(mean, std))
-  parameter.value.d = vec(gaussianRandom(mean, std), gaussianRandom(mean, std))
+  parameter.value.a = vec(0, 0)
+  parameter.value.b = vec(0, 0)
+  parameter.value.c = vec(0, 0)
+  parameter.value.d = vec(0, 0)
+
+  let params = []
+  if (Math.random() < 0.5) {
+    params.push(parameter.value.a)
+    params.push(parameter.value.d)
+  } else {
+    params.push(parameter.value.b)
+    params.push(parameter.value.c)
+  }
+
+  params.forEach((param) => {
+    const theta = Math.random() * 2 * Math.PI
+    const radius = gaussianRandom(0.6, 0.1)
+    const n = vecRad(theta).mul(radius)
+    param.x = n.x
+    param.y = n.y
+  })
+
+  fitView()
 }
 
 const saveImage = () => {
@@ -74,7 +91,11 @@ const copyImage = () => {
             <i v-if="app.pause" class="bi bi-play-fill pointer" @click="app.pause = false"></i>
             <span style="float: right">
               <!-- <i class="bi bi-arrows-fullscreen"></i> -->
-              <i class="bi bi-camera pointer" style="padding-left: 0.2em; padding-right: 0.2em" @click="copyImage"></i>
+              <i
+                class="bi bi-camera pointer"
+                style="padding-left: 0.2em; padding-right: 0.2em"
+                @click="copyImage"
+              ></i>
               <i class="bi bi-download pointer" @click="saveImage"></i>
             </span>
           </span>
@@ -101,12 +122,23 @@ const copyImage = () => {
                 <label>
                   {{ prop.name }}
                   <br />
-                  <input type="range" v-model.number="displayParameter[prop.name as keyof typeof displayParameter]"
-                    :step="prop.step" :min="prop.min" :max="prop.max"
-                    @dblclick="displayParameter[prop.name as keyof typeof displayParameter] = prop.default" />
+                  <input
+                    type="range"
+                    v-model.number="displayParameter[prop.name as keyof typeof displayParameter]"
+                    :step="prop.step"
+                    :min="prop.min"
+                    :max="prop.max"
+                    @dblclick="
+                      displayParameter[prop.name as keyof typeof displayParameter] = prop.default
+                    "
+                  />
                 </label>
-                <i class="bi bi-arrow-clockwise pointer"
-                  @click="displayParameter[prop.name as keyof typeof displayParameter] = prop.default"></i>
+                <i
+                  class="bi bi-arrow-clockwise pointer"
+                  @click="
+                    displayParameter[prop.name as keyof typeof displayParameter] = prop.default
+                  "
+                ></i>
                 <span style="float: right">
                   {{ humanReadable(displayParameter[prop.name as keyof typeof displayParameter]) }}
                 </span>

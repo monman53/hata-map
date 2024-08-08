@@ -13,9 +13,6 @@ const props = defineProps<{
   }
 }>()
 
-// TODO: Not good
-const param = parameter.value[props.prop.name as keyof typeof parameter.value]
-
 const width = 200
 const height = 200
 const center = vec(0, 0)
@@ -61,6 +58,7 @@ const moveStart = () => {
 
 const move = (e: any) => {
   if (drag) {
+    const param = getParam()
     const pos = getPositionOnSvgApp(e)
     param.x = pos.x
     param.y = pos.y
@@ -73,8 +71,14 @@ const moveEnd = () => {
 
 const reset = () => {
   //   parameter.value[props.prop.name as keyof typeof parameter.value] = props.prop.default
+  const param = getParam()
   param.x = props.prop.default.x
   param.y = props.prop.default.y
+}
+
+const getParam = () => {
+  // TODO: Not good
+  return parameter.value[props.prop.name as keyof typeof parameter.value]
 }
 
 const visible = ref(true)
@@ -102,17 +106,17 @@ const visible = ref(true)
       >
         <line :x1="-width" :y1="0" :x2="width" :y2="0"></line>
         <line :x1="0" :y1="-height" :x2="0" :y2="height"></line>
-        <circle :cx="param.x" :cy="param.y" :r="radius"></circle>
+        <circle :cx="getParam().x" :cy="getParam().y" :r="radius"></circle>
       </svg>
       <br />
       <!-- input -->
       <label>
         Re
-        <input type="number" :step="prop.step" v-model.number="param.x" />
+        <input type="number" :step="prop.step" v-model.number="getParam().x" />
       </label>
       <label>
         Im
-        <input type="number" :step="prop.step" v-model.number="param.y" />
+        <input type="number" :step="prop.step" v-model.number="getParam().y" />
       </label>
       <i class="bi bi-arrow-clockwise pointer" @click="reset"></i>
     </template>
