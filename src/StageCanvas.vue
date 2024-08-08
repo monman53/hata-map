@@ -209,8 +209,9 @@ onMounted(() => {
         cStd3 = vec(gaussianRandom(), gaussianRandom())
         dStd3 = vec(gaussianRandom(), gaussianRandom())
 
-        displayParameter.value.prevScale = displayParameter.value.scale
-        app.value.prevC = app.value.c
+        // displayParameter.value.prevScale = displayParameter.value.scale
+        // app.value.prevC = app.value.c
+        randomParameter()
       }
     }
     appThen = time

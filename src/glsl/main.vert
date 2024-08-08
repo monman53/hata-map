@@ -27,14 +27,16 @@ vec2 comp(vec2 a) {
 
 void main() {
     // Parameter Bezier
-    mat4x2 param4 = (1.0f - t) * param0 + t * param1;
-    mat4x2 param5 = (1.0f - t) * param1 + t * param2;
-    mat4x2 param6 = (1.0f - t) * param2 + t * param3;
+    float s = smoothstep(0., 1., t);
+    s = smoothstep(0., 1., s);
+    mat4x2 param4 = (1.0f - s) * param0 + s * param1;
+    mat4x2 param5 = (1.0f - s) * param1 + s * param2;
+    mat4x2 param6 = (1.0f - s) * param2 + s * param3;
 
-    mat4x2 param7 = (1.0f - t) * param4 + t * param5;
-    mat4x2 param8 = (1.0f - t) * param5 + t * param6;
+    mat4x2 param7 = (1.0f - s) * param4 + s * param5;
+    mat4x2 param8 = (1.0f - s) * param5 + s * param6;
 
-    mat4x2 param9 = (1.0f - t) * param7 + t * param8;
+    mat4x2 param9 = (1.0f - s) * param7 + s * param8;
 
     // Parameters
     vec2 a = param9[0];
@@ -55,7 +57,7 @@ void main() {
         }
     }
 
-    float s = smoothstep(0., 1., t);
+    s = smoothstep(0., 1., s);
     float currentScale = mix(prevScale, scale, s);
     vec2 currentCenter = mix(prevCenter, center, vec2(s));
 

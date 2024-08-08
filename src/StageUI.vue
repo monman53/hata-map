@@ -20,7 +20,7 @@ export const randomParameter = () => {
 
   params.forEach((param) => {
     const theta = Math.random() * 2 * Math.PI
-    const radius = gaussianRandom(0.65, 0.05)
+    const radius = gaussianRandom(0.65, 0.0)
     // const radius = gaussianRandom(0.9, 0)
     const n = vecRad(theta).mul(radius)
     param.x = n.x

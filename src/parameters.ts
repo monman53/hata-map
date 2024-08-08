@@ -6,7 +6,7 @@ export const displayParameter = ref({
   scale: 0,
   prevScale: 0, // Not visible
   pointSize: 0.5,
-  timeScale: 0.5,
+  timeScale: 0.6,
   moveScale: 1.0,
   hue: 0.3,
   saturation: 1.0,
@@ -46,7 +46,7 @@ export const displayProps = ref([
         max: 1 << 14,
         step: 1
       },
-      { name: 'timeScale', default: 0.5, min: 0, max: 3, step: 0.001 },
+      { name: 'timeScale', default: 0.3, min: 0, max: 3, step: 0.001 },
       { name: 'moveScale', default: 1.0, min: 0, max: 32, step: 0.001 },
       { name: 'hue', default: 0.3, min: 0, max: 1, step: 0.001 },
       { name: 'saturation', default: 1.0, min: 0, max: 1, step: 0.001 },

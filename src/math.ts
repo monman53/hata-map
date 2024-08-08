@@ -226,5 +226,5 @@ export const fitView = () => {
 
   app.value.t = 0
   displayParameter.value.prevScale = displayParameter.value.scale
-  displayParameter.value.scale = app.value.width / width
+  displayParameter.value.scale = app.value.width / width * 1.4
 }
