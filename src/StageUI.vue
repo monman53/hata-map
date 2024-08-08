@@ -46,6 +46,9 @@ window.addEventListener('keydown', (e: any) => {
   if (e.key === ' ') {
     app.value.pause = !app.value.pause
   }
+  if (e.key === 'f') {
+    fitView()
+  }
 })
 </script>
 
