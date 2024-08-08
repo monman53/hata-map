@@ -32,19 +32,49 @@ export const randomParameter = () => {
 
   params.forEach((param) => {
     const theta = Math.random() * 2 * Math.PI
-    const radius = Math.abs(gaussianRandom(displayParameter.value.randomR, displayParameter.value.randomStd))
+    const radius = Math.abs(
+      gaussianRandom(displayParameter.value.randomR, displayParameter.value.randomStd)
+    )
     const n = vecRad(theta).mul(radius)
     param.x = n.x
     param.y = n.y
   })
 
+  // Add history
+  app.value.randomHistory.push({
+    a: parameter.value.a.copy(),
+    b: parameter.value.b.copy(),
+    c: parameter.value.c.copy(),
+    d: parameter.value.d.copy()
+  })
+  if (app.value.randomHistory.length > app.value.randomHistoryMax) {
+    app.value.randomHistory.shift()
+  }
+  app.value.randomHistoryPtr = app.value.randomHistory.length - 1
+
   app.value.t = 0
   fitView()
+}
+
+const prevHistory = () => {
+  app.value.randomHistoryPtr = Math.max(0, app.value.randomHistoryPtr - 1)
+  setParameter(app.value.randomHistory[app.value.randomHistoryPtr])
+}
+
+const nextHistory = () => {
+  app.value.randomHistoryPtr = Math.min(
+    app.value.randomHistoryMax - 1,
+    app.value.randomHistoryPtr + 1
+  )
+  setParameter(app.value.randomHistory[app.value.randomHistoryPtr])
 }
 
 window.addEventListener('keydown', (e: any) => {
   if (e.key === ' ') {
     app.value.pause = !app.value.pause
+    if (app.value.t < 0.5) {
+      prevHistory()
+    }
   }
   if (e.key === 'f') {
     fitView()
@@ -106,8 +136,10 @@ const copyImage = () => {
           <!-- {{ app.pointerPos.x }}, {{ app.pointerPos.y }}<br>
           {{ app.c.x }}, {{ app.c.y }} -->
           <span id="animation">
+            <i class="bi bi-skip-backward-fill pointer" @click="prevHistory"></i>
             <i v-if="!app.pause" class="bi bi-pause-fill pointer" @click="app.pause = true"></i>
             <i v-if="app.pause" class="bi bi-play-fill pointer" @click="app.pause = false"></i>
+            <i class="bi bi-skip-forward-fill pointer" @click="nextHistory"></i>
             <span style="float: right">
               <!-- <i class="bi bi-arrows-fullscreen"></i> -->
               <i
