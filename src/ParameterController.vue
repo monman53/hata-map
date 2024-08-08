@@ -51,15 +51,24 @@ const getPositionOnSvgApp = (e: any) => {
 }
 
 let drag = false
+let m0 = vec(0,0)
 
-const moveStart = () => {
+const moveStart = (e: any) => {
+  const pos = getPositionOnSvgApp(e)
+  m0 = pos
   drag = true
 }
 
 const move = (e: any) => {
   if (drag) {
     const param = getParam()
-    const pos = getPositionOnSvgApp(e)
+    let pos = getPositionOnSvgApp(e)
+    if (e.shiftKey) {
+      pos.inplaceNormalize().inplaceMul(m0.length())
+    }
+    if (e.ctrlKey) {
+      pos = m0.normalize().mul(pos.length())
+    }
     param.x = pos.x
     param.y = pos.y
   }

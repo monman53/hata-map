@@ -1,4 +1,13 @@
 <script lang="ts">
+const setParameter = (t: any) => {
+  parameter.value.a = t.a.copy()
+  parameter.value.b = t.b.copy()
+  parameter.value.c = t.c.copy()
+  parameter.value.d = t.d.copy()
+  app.value.t = 0
+  fitView()
+}
+
 export const randomParameter = () => {
   parameter.value.a = vec(0, 0)
   parameter.value.b = vec(0, 0)
@@ -7,28 +16,70 @@ export const randomParameter = () => {
 
   let params = []
   const rand = Math.random()
-  if (rand < 1 / 3) {
+  if (rand < 1 / 4) {
+    params.push(parameter.value.a)
+    params.push(parameter.value.c)
+  } else if (rand < 2 / 4) {
     params.push(parameter.value.a)
     params.push(parameter.value.d)
-  } else if (rand < 2 / 3) {
+  } else if (rand < 3 / 4) {
     params.push(parameter.value.b)
     params.push(parameter.value.c)
   } else {
-    params.push(parameter.value.a)
-    params.push(parameter.value.c)
+    params.push(parameter.value.b)
+    params.push(parameter.value.d)
   }
 
   params.forEach((param) => {
     const theta = Math.random() * 2 * Math.PI
-    const radius = gaussianRandom(0.65, 0.05)
-    // const radius = gaussianRandom(0.9, 0)
+    const radius = Math.abs(
+      gaussianRandom(displayParameter.value.randomR, displayParameter.value.randomStd)
+    )
     const n = vecRad(theta).mul(radius)
     param.x = n.x
     param.y = n.y
   })
 
+  // Add history
+  app.value.randomHistory.push({
+    a: parameter.value.a.copy(),
+    b: parameter.value.b.copy(),
+    c: parameter.value.c.copy(),
+    d: parameter.value.d.copy()
+  })
+  if (app.value.randomHistory.length > app.value.randomHistoryMax) {
+    app.value.randomHistory.shift()
+  }
+  app.value.randomHistoryPtr = app.value.randomHistory.length - 1
+
+  app.value.t = 0
   fitView()
 }
+
+const prevHistory = () => {
+  app.value.randomHistoryPtr = Math.max(0, app.value.randomHistoryPtr - 1)
+  setParameter(app.value.randomHistory[app.value.randomHistoryPtr])
+}
+
+const nextHistory = () => {
+  app.value.randomHistoryPtr = Math.min(
+    app.value.randomHistoryMax - 1,
+    app.value.randomHistoryPtr + 1
+  )
+  setParameter(app.value.randomHistory[app.value.randomHistoryPtr])
+}
+
+window.addEventListener('keydown', (e: any) => {
+  if (e.key === ' ') {
+    app.value.pause = !app.value.pause
+    if (app.value.t < 0.5) {
+      prevHistory()
+    }
+  }
+  if (e.key === 'f') {
+    fitView()
+  }
+})
 </script>
 
 <script setup lang="ts">
@@ -43,14 +94,6 @@ import ParameterController from './ParameterController.vue'
 
 type ModeType = 'control' | 'info' | ''
 const mode: Ref<ModeType> = ref('')
-
-const setParameter = (t: any) => {
-  parameter.value.a = t.a.copy()
-  parameter.value.b = t.b.copy()
-  parameter.value.c = t.c.copy()
-  parameter.value.d = t.d.copy()
-  fitView()
-}
 
 const saveImage = () => {
   const link = document.createElement('a')
@@ -89,12 +132,14 @@ const copyImage = () => {
       <div v-if="mode === 'control'" id="controller">
         <!-- Animation controller -->
         <fieldset>
-          <legend>Animation</legend>
+          <legend>Random Animation</legend>
           <!-- {{ app.pointerPos.x }}, {{ app.pointerPos.y }}<br>
           {{ app.c.x }}, {{ app.c.y }} -->
           <span id="animation">
+            <i class="bi bi-skip-backward-fill pointer" @click="prevHistory"></i>
             <i v-if="!app.pause" class="bi bi-pause-fill pointer" @click="app.pause = true"></i>
             <i v-if="app.pause" class="bi bi-play-fill pointer" @click="app.pause = false"></i>
+            <i class="bi bi-skip-forward-fill pointer" @click="nextHistory"></i>
             <span style="float: right">
               <!-- <i class="bi bi-arrows-fullscreen"></i> -->
               <i
@@ -107,6 +152,10 @@ const copyImage = () => {
           </span>
           <br />
           FPS: {{ humanReadable(fps) }}<br />
+          <!-- <label>
+            <input type="checkbox" v-model="app.randomAnimation" />
+            Random parameter
+          </label> -->
         </fieldset>
 
         <!-- Display parameters -->

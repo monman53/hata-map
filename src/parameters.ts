@@ -3,10 +3,12 @@ import { vec } from './math'
 
 export const displayParameter = ref({
   n: 10,
+  randomR: 0,
+  randomStd: 0,
   scale: 0,
   prevScale: 0, // Not visible
   pointSize: 0.5,
-  timeScale: 0.5,
+  timeScale: 0.6,
   moveScale: 1.0,
   hue: 0.3,
   saturation: 1.0,
@@ -30,7 +32,9 @@ export const displayProps = ref([
     name: 'Display',
     visible: true,
     props: [
-      { name: 'n', default: 16, min: 0, max: 32, step: 1 },
+      { name: 'n', default: 19, min: 0, max: 32, step: 1 },
+      { name: 'randomR', default: 0.65, min: 0.5, max: 1.0, step: 0.0001 },
+      { name: 'randomStd', default: 0.01, min: 0, max: 0.3, step: 0.0001 },
       { name: 'pointSize', default: 0.5, min: 0, max: 2, step: 0.001 },
       { // Not visible
         name: 'prevScale',
@@ -46,9 +50,9 @@ export const displayProps = ref([
         max: 1 << 14,
         step: 1
       },
-      { name: 'timeScale', default: 0.5, min: 0, max: 3, step: 0.001 },
-      { name: 'moveScale', default: 1.0, min: 0, max: 32, step: 0.001 },
-      { name: 'hue', default: 0.3, min: 0, max: 1, step: 0.001 },
+      { name: 'timeScale', default: 0.4, min: 0, max: 3, step: 0.001 },
+      { name: 'moveScale', default: 0.0, min: 0, max: 32, step: 0.001 },
+      { name: 'hue', default: 0.25, min: 0, max: 1, step: 0.001 },
       { name: 'saturation', default: 1.0, min: 0, max: 1, step: 0.001 },
       { name: 'lightness', default: 0.9, min: 0, max: 1, step: 0.001 },
       { name: 'alpha', default: 1.0, min: 0, max: 1, step: 0.001 }

@@ -9,6 +9,8 @@ export const resetParameter = (category: any) => {
   for (const prop of category.props) {
     parameter.value[prop.name as keyof typeof parameter.value] = prop.default.copy()
   }
+
+  fitView()
 }
 
 export const resetAllParameter = () => {
@@ -23,5 +25,6 @@ export const resetAllParameter = () => {
     }
   }
 
+  fitView()
   fitView()
 }

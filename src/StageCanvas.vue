@@ -76,7 +76,7 @@ import { app, fps } from './main'
 import mainVS from './glsl/main.vert?raw'
 import mainFS from './glsl/main.frag?raw'
 import { displayParameter, parameter } from './parameters'
-import { fitView, gaussianRandom, Vec, vec } from './math'
+import { gaussianRandom, Vec, vec } from './math'
 import { randomParameter } from './StageUI.vue'
 
 //--------------------------------
@@ -185,11 +185,12 @@ onMounted(() => {
     //--------------------------------
     // Update curve
     //--------------------------------
-    if (!app.value.pause) {
+    // if (!app.value.pause) {
+    {
       const dt = time - appThen
       app.value.t += (dt * displayParameter.value.timeScale) / 300
       // Update
-      if (app.value.t > 1.0) {
+      if (app.value.t > 1.0 || app.value.pause) {
         app.value.t = app.value.t - Math.floor(app.value.t)
 
         a[0] = a[3]
@@ -209,8 +210,13 @@ onMounted(() => {
         cStd3 = vec(gaussianRandom(), gaussianRandom())
         dStd3 = vec(gaussianRandom(), gaussianRandom())
 
-        displayParameter.value.prevScale = displayParameter.value.scale
-        app.value.prevC = app.value.c
+        // if (app.value.randomAnimation) {
+        if (app.value.pause) {
+          displayParameter.value.prevScale = displayParameter.value.scale
+          app.value.prevC = app.value.c
+        } else {
+          randomParameter()
+        }
       }
     }
     appThen = time
