@@ -12,6 +12,7 @@ export const app = ref({
   pause: false,
   t: 2, // > 1 for initial Bezier creation
   c: vec(0, 0),
+  prevC: vec(0, 0),
   pointerPos: vec(0, 0)
 })
 

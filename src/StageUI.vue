@@ -1,3 +1,36 @@
+<script lang="ts">
+export const randomParameter = () => {
+  parameter.value.a = vec(0, 0)
+  parameter.value.b = vec(0, 0)
+  parameter.value.c = vec(0, 0)
+  parameter.value.d = vec(0, 0)
+
+  let params = []
+  const rand = Math.random()
+  if (rand < 1 / 3) {
+    params.push(parameter.value.a)
+    params.push(parameter.value.d)
+  } else if (rand < 2 / 3) {
+    params.push(parameter.value.b)
+    params.push(parameter.value.c)
+  } else {
+    params.push(parameter.value.a)
+    params.push(parameter.value.c)
+  }
+
+  params.forEach((param) => {
+    const theta = Math.random() * 2 * Math.PI
+    const radius = gaussianRandom(0.65, 0.05)
+    // const radius = gaussianRandom(0.9, 0)
+    const n = vecRad(theta).mul(radius)
+    param.x = n.x
+    param.y = n.y
+  })
+
+  fitView()
+}
+</script>
+
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
 import { app, fps } from './main'
@@ -16,33 +49,6 @@ const setParameter = (t: any) => {
   parameter.value.b = t.b.copy()
   parameter.value.c = t.c.copy()
   parameter.value.d = t.d.copy()
-  app.value.t = 2
-  fitView()
-}
-
-const randomParameter = () => {
-  parameter.value.a = vec(0, 0)
-  parameter.value.b = vec(0, 0)
-  parameter.value.c = vec(0, 0)
-  parameter.value.d = vec(0, 0)
-
-  let params = []
-  if (Math.random() < 0.5) {
-    params.push(parameter.value.a)
-    params.push(parameter.value.d)
-  } else {
-    params.push(parameter.value.b)
-    params.push(parameter.value.c)
-  }
-
-  params.forEach((param) => {
-    const theta = Math.random() * 2 * Math.PI
-    const radius = gaussianRandom(0.6, 0.1)
-    const n = vecRad(theta).mul(radius)
-    param.x = n.x
-    param.y = n.y
-  })
-
   fitView()
 }
 
@@ -119,30 +125,34 @@ const copyImage = () => {
             </legend>
             <template v-if="category.visible">
               <template v-for="prop of category.props" :key="prop.name">
-                <label>
-                  {{ prop.name }}
-                  <br />
-                  <input
-                    type="range"
-                    v-model.number="displayParameter[prop.name as keyof typeof displayParameter]"
-                    :step="prop.step"
-                    :min="prop.min"
-                    :max="prop.max"
-                    @dblclick="
+                <template v-if="prop.name !== 'prevScale'">
+                  <label>
+                    {{ prop.name }}
+                    <br />
+                    <input
+                      type="range"
+                      v-model.number="displayParameter[prop.name as keyof typeof displayParameter]"
+                      :step="prop.step"
+                      :min="prop.min"
+                      :max="prop.max"
+                      @dblclick="
+                        displayParameter[prop.name as keyof typeof displayParameter] = prop.default
+                      "
+                    />
+                  </label>
+                  <i
+                    class="bi bi-arrow-clockwise pointer"
+                    @click="
                       displayParameter[prop.name as keyof typeof displayParameter] = prop.default
                     "
-                  />
-                </label>
-                <i
-                  class="bi bi-arrow-clockwise pointer"
-                  @click="
-                    displayParameter[prop.name as keyof typeof displayParameter] = prop.default
-                  "
-                ></i>
-                <span style="float: right">
-                  {{ humanReadable(displayParameter[prop.name as keyof typeof displayParameter]) }}
-                </span>
-                <br />
+                  ></i>
+                  <span style="float: right">
+                    {{
+                      humanReadable(displayParameter[prop.name as keyof typeof displayParameter])
+                    }}
+                  </span>
+                  <br />
+                </template>
               </template>
               <button @click="fitView">Fit view</button>
             </template>

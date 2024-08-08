@@ -12,8 +12,8 @@ const getPositionOnSvg = (e: any) => {
 
 const getPositionOnSvgApp = (e: any) => {
   const m = getPositionOnSvg(e)
-  const x = (m.x - app.value.width / 2) / displayParameter.value.scale * 2 + app.value.c.x
-  const y = (m.y - app.value.height / 2) / displayParameter.value.scale * 2 + app.value.c.y
+  const x = ((m.x - app.value.width / 2) / displayParameter.value.scale) * 2 + app.value.c.x
+  const y = ((m.y - app.value.height / 2) / displayParameter.value.scale) * 2 + app.value.c.y
   return vec(x, y)
 }
 
@@ -76,7 +76,8 @@ import { app, fps } from './main'
 import mainVS from './glsl/main.vert?raw'
 import mainFS from './glsl/main.frag?raw'
 import { displayParameter, parameter } from './parameters'
-import { gaussianRandom, Vec, vec } from './math'
+import { fitView, gaussianRandom, Vec, vec } from './math'
+import { randomParameter } from './StageUI.vue'
 
 //--------------------------------
 // WebGL support functions
@@ -129,9 +130,11 @@ onMounted(() => {
   const mainProgram = createProgram(gl, [mainVS, mainFS])
   const mainProgLocs = {
     n: gl.getUniformLocation(mainProgram, 'n'),
+    prevScale: gl.getUniformLocation(mainProgram, 'prevScale'),
     scale: gl.getUniformLocation(mainProgram, 'scale'),
-    pointSize: gl.getUniformLocation(mainProgram, 'pointSize'),
+    prevCenter: gl.getUniformLocation(mainProgram, 'prevCenter'),
     center: gl.getUniformLocation(mainProgram, 'center'),
+    pointSize: gl.getUniformLocation(mainProgram, 'pointSize'),
     t: gl.getUniformLocation(mainProgram, 't'),
     param0: gl.getUniformLocation(mainProgram, 'param0'),
     param1: gl.getUniformLocation(mainProgram, 'param1'),
@@ -205,6 +208,9 @@ onMounted(() => {
         bStd3 = vec(gaussianRandom(), gaussianRandom())
         cStd3 = vec(gaussianRandom(), gaussianRandom())
         dStd3 = vec(gaussianRandom(), gaussianRandom())
+
+        displayParameter.value.prevScale = displayParameter.value.scale
+        app.value.prevC = app.value.c
       }
     }
     appThen = time
@@ -231,14 +237,52 @@ onMounted(() => {
     gl.useProgram(mainProgram)
 
     gl.uniform1i(mainProgLocs.n, displayParameter.value.n)
+    gl.uniform1f(mainProgLocs.prevScale, displayParameter.value.prevScale)
     gl.uniform1f(mainProgLocs.scale, displayParameter.value.scale)
     gl.uniform1f(mainProgLocs.pointSize, displayParameter.value.pointSize)
+    gl.uniform2f(mainProgLocs.prevCenter, app.value.prevC.x, app.value.prevC.y)
     gl.uniform2f(mainProgLocs.center, app.value.c.x, app.value.c.y)
     gl.uniform1f(mainProgLocs.t, app.value.t)
-    gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [a[0].x, a[0].y, b[0].x, b[0].y, c[0].x, c[0].y, d[0].x, d[0].y])
-    gl.uniformMatrix4x2fv(mainProgLocs.param1, false, [a[1].x, a[1].y, b[1].x, b[1].y, c[1].x, c[1].y, d[1].x, d[1].y])
-    gl.uniformMatrix4x2fv(mainProgLocs.param2, false, [a[2].x, a[2].y, b[2].x, b[2].y, c[2].x, c[2].y, d[2].x, d[2].y])
-    gl.uniformMatrix4x2fv(mainProgLocs.param3, false, [a[3].x, a[3].y, b[3].x, b[3].y, c[3].x, c[3].y, d[3].x, d[3].y])
+    gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [
+      a[0].x,
+      a[0].y,
+      b[0].x,
+      b[0].y,
+      c[0].x,
+      c[0].y,
+      d[0].x,
+      d[0].y
+    ])
+    gl.uniformMatrix4x2fv(mainProgLocs.param1, false, [
+      a[1].x,
+      a[1].y,
+      b[1].x,
+      b[1].y,
+      c[1].x,
+      c[1].y,
+      d[1].x,
+      d[1].y
+    ])
+    gl.uniformMatrix4x2fv(mainProgLocs.param2, false, [
+      a[2].x,
+      a[2].y,
+      b[2].x,
+      b[2].y,
+      c[2].x,
+      c[2].y,
+      d[2].x,
+      d[2].y
+    ])
+    gl.uniformMatrix4x2fv(mainProgLocs.param3, false, [
+      a[3].x,
+      a[3].y,
+      b[3].x,
+      b[3].y,
+      c[3].x,
+      c[3].y,
+      d[3].x,
+      d[3].y
+    ])
     gl.uniform3f(
       mainProgLocs.hsl,
       displayParameter.value.hue,
@@ -269,7 +313,14 @@ onMounted(() => {
 
 <template>
   <div id="base">
-    <canvas ref="canvas" :width="app.width" :height="app.height" @mousemove="svgMoveHandler"
-      @mouseup="svgMoveEndHandler" @wheel="svgScaleHandler" @mousedown="moveStart"></canvas>
+    <canvas
+      ref="canvas"
+      :width="app.width"
+      :height="app.height"
+      @mousemove="svgMoveHandler"
+      @mouseup="svgMoveEndHandler"
+      @wheel="svgScaleHandler"
+      @mousedown="moveStart"
+    ></canvas>
   </div>
 </template>

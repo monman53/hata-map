@@ -2,9 +2,11 @@
 
 uniform int n;
 uniform ivec2 canvasSize;
+uniform float prevScale;
 uniform float scale;
-uniform float pointSize;
+uniform vec2 prevCenter;
 uniform vec2 center;
+uniform float pointSize;
 
 uniform mat4x2 param0;
 uniform mat4x2 param1;
@@ -53,10 +55,14 @@ void main() {
         }
     }
 
-    vec2 aspect = 1.0 / vec2(canvasSize);
-    vec2 pos = (z - center) * aspect * scale;
+    float s = smoothstep(0., 1., t);
+    float currentScale = mix(prevScale, scale, s);
+    vec2 currentCenter = mix(prevCenter, center, vec2(s));
+
+    vec2 aspect = 1.0f / vec2(canvasSize);
+    vec2 pos = (z - currentCenter) * aspect * currentScale;
     gl_Position = vec4(pos, 0.0f, 1.0f);
-    gl_PointSize = 1.0f * scale / 2000. * pointSize;
+    gl_PointSize = 1.0f * currentScale / 2000.f * pointSize;
 
     int id = gl_VertexID;
     int m = 0;

@@ -1,4 +1,4 @@
-import { fitView, gaussianRandom, vec, vecRad } from './math'
+import { fitView } from './math'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 
 export const humanReadable = (x: number) => {

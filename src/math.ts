@@ -217,10 +217,14 @@ export const fitView = () => {
   const d = parameter.value.d
   const [left, top, right, bottom] = getHataMapRect(vec(0, 0), a, b, c, d, 10)
 
+  app.value.prevC = app.value.c
   app.value.c = vec((left + right) / 2, (top + bottom) / 2)
 
   const width = right - left
   // TODO:
   // const height = top - bottom
+
+  app.value.t = 0
+  displayParameter.value.prevScale = displayParameter.value.scale
   displayParameter.value.scale = app.value.width / width
 }

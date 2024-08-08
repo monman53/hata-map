@@ -4,6 +4,7 @@ import { vec } from './math'
 export const displayParameter = ref({
   n: 10,
   scale: 0,
+  prevScale: 0, // Not visible
   pointSize: 0.5,
   timeScale: 0.5,
   moveScale: 1.0,
@@ -31,6 +32,13 @@ export const displayProps = ref([
     props: [
       { name: 'n', default: 16, min: 0, max: 32, step: 1 },
       { name: 'pointSize', default: 0.5, min: 0, max: 2, step: 0.001 },
+      { // Not visible
+        name: 'prevScale',
+        default: Math.min(window.innerWidth, window.innerHeight),
+        min: 0,
+        max: 1 << 14,
+        step: 1
+      },
       {
         name: 'scale',
         default: Math.min(window.innerWidth, window.innerHeight),
