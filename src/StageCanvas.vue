@@ -190,7 +190,7 @@ onMounted(() => {
       const dt = time - appThen
       app.value.t += (dt * displayParameter.value.timeScale) / 300
       // Update
-      if (app.value.t > 1.0) {
+      if (app.value.t > 1.0 || app.value.pause) {
         app.value.t = app.value.t - Math.floor(app.value.t)
 
         a[0] = a[3]

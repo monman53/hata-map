@@ -3,6 +3,8 @@ import { vec } from './math'
 
 export const displayParameter = ref({
   n: 10,
+  randomR: 0,
+  randomStd: 0,
   scale: 0,
   prevScale: 0, // Not visible
   pointSize: 0.5,
@@ -31,6 +33,8 @@ export const displayProps = ref([
     visible: true,
     props: [
       { name: 'n', default: 19, min: 0, max: 32, step: 1 },
+      { name: 'randomR', default: 0.65, min: 0.5, max: 1.0, step: 0.0001 },
+      { name: 'randomStd', default: 0.01, min: 0, max: 0.3, step: 0.0001 },
       { name: 'pointSize', default: 0.5, min: 0, max: 2, step: 0.001 },
       { // Not visible
         name: 'prevScale',
