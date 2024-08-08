@@ -66,6 +66,12 @@ export class Vec {
     return this
   }
 
+  inplaceEMul(v: Vec) {
+    this.x *= v.x
+    this.y *= v.y
+    return this
+  }
+
   length() {
     return Math.sqrt(this.x * this.x + this.y * this.y)
   }
@@ -102,6 +108,10 @@ export class Vec {
     return this.copy().inplaceRotate(theta)
   }
 
+  eMul(v: Vec) {
+    return this.copy().inplaceEMul(v)
+  }
+
   static add(a: Vec, b: Vec) {
     return a.add(b)
   }
@@ -124,6 +134,10 @@ export class Vec {
 
   static rotate(v: Vec, theta: number) {
     return v.rotate(theta)
+  }
+
+  static eMul(a: Vec, b: Vec) {
+    return a.eMul(b)
   }
 
   // TODO: toString

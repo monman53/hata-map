@@ -63,6 +63,7 @@ const copyImage = () => {
 
     <div class="content">
       <div v-if="mode === 'control'" id="controller">
+        <!-- Animation controller -->
         <fieldset>
           <legend>Animation</legend>
           <!-- {{ app.pointerPos.x }}, {{ app.pointerPos.y }}<br>
@@ -79,6 +80,8 @@ const copyImage = () => {
           <br />
           FPS: {{ humanReadable(fps) }}<br />
         </fieldset>
+
+        <!-- Display parameters -->
         <template v-for="category of displayProps" :key="category.name">
           <fieldset>
             <legend>
@@ -97,8 +100,8 @@ const copyImage = () => {
                 <label>
                   {{ prop.name }}
                   <br />
-                  <input type="range" v-model.number="displayParameter[prop.name as keyof typeof displayParameter]" :step="prop.step"
-                    :min="prop.min" :max="prop.max"
+                  <input type="range" v-model.number="displayParameter[prop.name as keyof typeof displayParameter]"
+                    :step="prop.step" :min="prop.min" :max="prop.max"
                     @dblclick="displayParameter[prop.name as keyof typeof displayParameter] = prop.default" />
                 </label>
                 <i class="bi bi-arrow-clockwise pointer"
@@ -112,6 +115,57 @@ const copyImage = () => {
             </template>
           </fieldset>
         </template>
+
+        <!-- Hata parameters -->
+        <template v-for="category of parameterProps" :key="category.name">
+          <fieldset>
+            <legend>
+              <span class="pointer" @click="category.visible = !category.visible">
+                <i class="bi bi-caret-down-fill" v-if="category.visible"></i>
+                <i class="bi bi-caret-right-fill" v-if="!category.visible"></i>
+                {{ category.name }}
+              </span>
+              &nbsp;
+              <span class="pointer">
+                <i class="bi bi-arrow-clockwise" @click="resetParameter(category)"></i>
+              </span>
+            </legend>
+            <template v-if="category.visible">
+              <template v-for="prop of category.props" :key="prop.name">
+                <!-- Real -->
+                <label>
+                  {{ prop.name }} real
+                  <br />
+                  <input type="range" v-model.number="parameter[prop.name as keyof typeof parameter].x"
+                    :step="prop.step" :min="prop.min" :max="prop.max"
+                    @dblclick="parameter[prop.name as keyof typeof parameter].x = prop.default.x" />
+                </label>
+                <i class="bi bi-arrow-clockwise pointer"
+                  @click="parameter[prop.name as keyof typeof parameter].x = prop.default.x"></i>
+                <span style="float: right">
+                  {{ humanReadable(parameter[prop.name as keyof typeof parameter].x) }}
+                </span>
+                <br />
+                <!-- Imag -->
+                <label>
+                  {{ prop.name }} imag
+                  <br />
+                  <input type="range" v-model.number="parameter[prop.name as keyof typeof parameter].y"
+                    :step="prop.step" :min="prop.min" :max="prop.max"
+                    @dblclick="parameter[prop.name as keyof typeof parameter].y = prop.default.y" />
+                </label>
+                <i class="bi bi-arrow-clockwise pointer"
+                  @click="parameter[prop.name as keyof typeof parameter].y = prop.default.y"></i>
+                <span style="float: right">
+                  {{ humanReadable(parameter[prop.name as keyof typeof parameter].y) }}
+                </span>
+                <br />
+              </template>
+            </template>
+          </fieldset>
+        </template>
+
+        <!-- Templates -->
         <fieldset>
           <legend>Templates</legend>
           <template v-for="(t, idx) of parameterTemplates" :key="idx">
@@ -122,6 +176,8 @@ const copyImage = () => {
           <button @click="randomParameter">Random</button>
         </fieldset>
       </div>
+
+      <!-- Infos -->
       <div v-if="mode === 'info'">
         <p>TBD</p>
       </div>

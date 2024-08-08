@@ -10,7 +10,7 @@ export const app = ref({
   height: window.innerHeight,
   n: 10,
   pause: false,
-  t: 0,
+  t: 2, // > 1 for initial Bezier creation
   c: vec(0, 0),
   pointerPos: vec(0, 0)
 })

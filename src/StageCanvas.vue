@@ -215,38 +215,14 @@ onMounted(() => {
     const dStd = parameter.value.dStd
     const moveScale = displayParameter.value.moveScale
 
-    a[2] = vec(
-      parameter.value.a.x + aStd2.x * aStd.x * moveScale,
-      parameter.value.a.y + aStd2.y * aStd.y * moveScale
-    )
-    b[2] = vec(
-      parameter.value.b.x + bStd2.x * bStd.x * moveScale,
-      parameter.value.b.y + bStd2.y * bStd.y * moveScale
-    )
-    c[2] = vec(
-      parameter.value.c.x + cStd2.x * cStd.x * moveScale,
-      parameter.value.c.y + cStd2.y * cStd.y * moveScale
-    )
-    d[2] = vec(
-      parameter.value.d.x + dStd2.x * dStd.x * moveScale,
-      parameter.value.d.y + dStd2.y * dStd.y * moveScale
-    )
-    a[3] = vec(
-      parameter.value.a.x + aStd3.x * aStd.x * moveScale,
-      parameter.value.a.y + aStd3.y * aStd.y * moveScale
-    )
-    b[3] = vec(
-      parameter.value.b.x + bStd3.x * bStd.x * moveScale,
-      parameter.value.b.y + bStd3.y * bStd.y * moveScale
-    )
-    c[3] = vec(
-      parameter.value.c.x + cStd3.x * cStd.x * moveScale,
-      parameter.value.c.y + cStd3.y * cStd.y * moveScale
-    )
-    d[3] = vec(
-      parameter.value.d.x + dStd3.x * dStd.x * moveScale,
-      parameter.value.d.y + dStd3.y * dStd.y * moveScale
-    )
+    a[2] = parameter.value.a.add(aStd2.eMul(aStd).mul(moveScale))
+    b[2] = parameter.value.b.add(bStd2.eMul(bStd).mul(moveScale))
+    c[2] = parameter.value.c.add(cStd2.eMul(cStd).mul(moveScale))
+    d[2] = parameter.value.d.add(dStd2.eMul(dStd).mul(moveScale))
+    a[3] = parameter.value.a.add(aStd3.eMul(aStd).mul(moveScale))
+    b[3] = parameter.value.b.add(bStd3.eMul(bStd).mul(moveScale))
+    c[3] = parameter.value.c.add(cStd3.eMul(cStd).mul(moveScale))
+    d[3] = parameter.value.d.add(dStd3.eMul(dStd).mul(moveScale))
 
     //--------------------------------
     // Draw
