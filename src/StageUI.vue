@@ -14,26 +14,43 @@ export const randomParameter = () => {
   parameter.value.c = vec(0, 0)
   parameter.value.d = vec(0, 0)
 
-  let params = []
+  let majorParams = []
+  let minorParams = []
   const rand = Math.random()
   if (rand < 1 / 4) {
-    params.push(parameter.value.a)
-    params.push(parameter.value.c)
+    majorParams.push(parameter.value.a)
+    majorParams.push(parameter.value.c)
+    minorParams.push(parameter.value.b)
+    minorParams.push(parameter.value.d)
   } else if (rand < 2 / 4) {
-    params.push(parameter.value.a)
-    params.push(parameter.value.d)
+    majorParams.push(parameter.value.a)
+    majorParams.push(parameter.value.d)
+    minorParams.push(parameter.value.b)
+    minorParams.push(parameter.value.c)
   } else if (rand < 3 / 4) {
-    params.push(parameter.value.b)
-    params.push(parameter.value.c)
+    majorParams.push(parameter.value.b)
+    majorParams.push(parameter.value.c)
+    minorParams.push(parameter.value.a)
+    minorParams.push(parameter.value.d)
   } else {
-    params.push(parameter.value.b)
-    params.push(parameter.value.d)
+    majorParams.push(parameter.value.b)
+    majorParams.push(parameter.value.d)
+    minorParams.push(parameter.value.a)
+    minorParams.push(parameter.value.c)
   }
 
-  params.forEach((param) => {
+  majorParams.forEach((param) => {
     const theta = Math.random() * 2 * Math.PI
     const radius =
-      displayParameter.value.randomR + Math.abs(gaussianRandom(0, displayParameter.value.randomStd))
+      displayParameter.value.majorR + Math.abs(gaussianRandom(0, displayParameter.value.majorStd))
+    const n = vecRad(theta).mul(radius)
+    param.x = n.x
+    param.y = n.y
+  })
+  minorParams.forEach((param) => {
+    const theta = Math.random() * 2 * Math.PI
+    const radius =
+      displayParameter.value.minorR + Math.abs(gaussianRandom(0, displayParameter.value.minorStd))
     const n = vecRad(theta).mul(radius)
     param.x = n.x
     param.y = n.y
@@ -56,11 +73,13 @@ export const randomParameter = () => {
 }
 
 const prevHistory = () => {
+  app.value.pause = true
   app.value.randomHistoryPtr = Math.max(0, app.value.randomHistoryPtr - 1)
   setParameter(app.value.randomHistory[app.value.randomHistoryPtr])
 }
 
 const nextHistory = () => {
+  app.value.pause = true
   app.value.randomHistoryPtr = Math.min(
     app.value.randomHistoryMax - 1,
     app.value.randomHistoryPtr + 1
@@ -248,7 +267,16 @@ const copyImage = () => {
             <br v-if="idx % 8 == 7" />
           </template>
           <br />
-          <button @click="randomParameter">Random</button>
+          <button
+            @click="
+              () => {
+                randomParameter()
+                app.pause = true
+              }
+            "
+          >
+            Random
+          </button>
         </fieldset>
       </div>
 

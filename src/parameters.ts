@@ -3,17 +3,17 @@ import { vec } from './math'
 
 export const displayParameter = ref({
   n: 10,
-  randomR: 0,
-  randomStd: 0,
-  scale: 0,
-  prevScale: 0, // Not visible
+  majorR: 0,
+  majorStd: 0,
+  minorR: 0,
+  minorStd: 0,
   pointSize: 0.5,
   timeScale: 0.6,
   moveScale: 1.0,
   hue: 0.3,
   saturation: 1.0,
   lightness: 0.5,
-  alpha: 0.5,
+  alpha: 0.5
 })
 
 export const parameter = ref({
@@ -24,7 +24,7 @@ export const parameter = ref({
   aStd: vec(0, 0),
   bStd: vec(0, 0),
   cStd: vec(0, 0),
-  dStd: vec(0, 0),
+  dStd: vec(0, 0)
 })
 
 export const displayProps = ref([
@@ -34,22 +34,10 @@ export const displayProps = ref([
     props: [
       { name: 'n', default: 19, min: 0, max: 32, step: 1 },
       { name: 'hue', default: 0.25, min: 0, max: 1, step: 0.001 },
-      { name: 'randomR', default: 0.65, min: 0.5, max: 1.0, step: 0.0001 },
-      { name: 'randomStd', default: 0.05, min: 0, max: 0.3, step: 0.0001 },
-      { // Not visible
-        name: 'prevScale',
-        default: Math.min(window.innerWidth, window.innerHeight),
-        min: 0,
-        max: 1 << 14,
-        step: 1
-      },
-      {
-        name: 'scale',
-        default: Math.min(window.innerWidth, window.innerHeight),
-        min: 0,
-        max: 1 << 14,
-        step: 1
-      },
+      { name: 'majorR', default: 0.65, min: 0.5, max: 1.0, step: 0.0001 },
+      { name: 'majorStd', default: 0.05, min: 0, max: 0.3, step: 0.0001 },
+      { name: 'minorR', default: 0, min: 0.0, max: 0.5, step: 0.0001 },
+      { name: 'minorStd', default: 0, min: 0, max: 0.3, step: 0.0001 },
       { name: 'pointSize', default: 0.5, min: 0, max: 2, step: 0.001 },
       { name: 'timeScale', default: 0.4, min: 0, max: 3, step: 0.001 },
       { name: 'moveScale', default: 0.0, min: 0, max: 32, step: 0.001 },
@@ -57,7 +45,7 @@ export const displayProps = ref([
       { name: 'lightness', default: 0.9, min: 0, max: 1, step: 0.001 },
       { name: 'alpha', default: 1.0, min: 0, max: 1, step: 0.001 }
     ]
-  },
+  }
 ])
 export const parameterProps = ref([
   {
@@ -67,7 +55,7 @@ export const parameterProps = ref([
       { name: 'a', default: vec(0.7, -0.2), min: -1, max: 1, step: 0.001 },
       { name: 'b', default: vec(0, 0), min: -1, max: 1, step: 0.001 },
       { name: 'c', default: vec(0, 0), min: -1, max: 1, step: 0.001 },
-      { name: 'd', default: vec(0.65, 0), min: -1, max: 1, step: 0.001 },
+      { name: 'd', default: vec(0.65, 0), min: -1, max: 1, step: 0.001 }
       // { name: 'aStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
       // { name: 'bStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
       // { name: 'cStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },

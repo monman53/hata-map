@@ -12,14 +12,14 @@ const getPositionOnSvg = (e: any) => {
 
 const getPositionOnSvgApp = (e: any) => {
   const m = getPositionOnSvg(e)
-  const x = ((m.x - app.value.width / 2) / displayParameter.value.scale) * 2 + app.value.c.x
-  const y = ((m.y - app.value.height / 2) / displayParameter.value.scale) * 2 + app.value.c.y
+  const x = ((m.x - app.value.width / 2) / app.value.scale) * 2 + app.value.c.x
+  const y = ((m.y - app.value.height / 2) / app.value.scale) * 2 + app.value.c.y
   return vec(x, y)
 }
 
 const getPositionDiffOnSvgApp = (e: any, m0: Vec) => {
   const m = getPositionOnSvg(e)
-  const d = m.inplaceSub(m0).inplaceDiv(displayParameter.value.scale / 2)
+  const d = m.inplaceSub(m0).inplaceDiv(app.value.scale / 2)
   return d
 }
 
@@ -57,7 +57,7 @@ const svgScaleHandler = (e: any) => {
   const scaleFactor = 1.1
   const r = e.deltaY > 0 ? scaleFactor : 1 / scaleFactor
   app.value.c = app.value.c.add(p.sub(app.value.c).mul(1 - r))
-  displayParameter.value.scale /= r
+  app.value.scale /= r
 }
 
 const moveStart = (e: any) => {
@@ -213,7 +213,7 @@ onMounted(() => {
 
         // if (app.value.randomAnimation) {
         if (app.value.pause) {
-          displayParameter.value.prevScale = displayParameter.value.scale
+          app.value.prevScale = app.value.scale
           app.value.prevC = app.value.c
         } else {
           randomParameter()
@@ -244,8 +244,8 @@ onMounted(() => {
     gl.useProgram(mainProgram)
 
     gl.uniform1i(mainProgLocs.n, displayParameter.value.n)
-    gl.uniform1f(mainProgLocs.prevScale, displayParameter.value.prevScale)
-    gl.uniform1f(mainProgLocs.scale, displayParameter.value.scale)
+    gl.uniform1f(mainProgLocs.prevScale, app.value.prevScale)
+    gl.uniform1f(mainProgLocs.scale, app.value.scale)
     gl.uniform1f(mainProgLocs.pointSize, displayParameter.value.pointSize)
     gl.uniform2f(mainProgLocs.prevCenter, app.value.prevC.x, app.value.prevC.y)
     gl.uniform2f(mainProgLocs.center, app.value.c.x, app.value.c.y)

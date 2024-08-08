@@ -14,6 +14,8 @@ export const app = ref({
   t: 2, // > 1 for initial Bezier creation
   c: vec(0, 0),
   prevC: vec(0, 0),
+  scale: 0,
+  prevScale: 0,
   pointerPos: vec(0, 0),
   mousePos: vec(0, 0),
   randomAnimation: false,
