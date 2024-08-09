@@ -166,7 +166,7 @@ const templateVisible = ref(false)
         <i v-else class="bi bi-info-circle pointer" @click="mode = 'info'" />
       </div> -->
       <div style="text-align: right">
-        <a href="https://github.com/monman53/snowflake"><i class="bi bi-github pointer" /></a>
+        <a href="https://github.com/monman53/hata-map"><i class="bi bi-github pointer" /></a>
       </div>
     </div>
 

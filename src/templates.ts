@@ -17,7 +17,7 @@ export const colorTemplates = [
     name: 'autumn',
     minHue: 0.0,
     maxHue: 0.25,
-    saturation: 0.7,
+    saturation: 0.8,
     lightness: 0.5,
     lightnessOffset: 0.4,
     alpha: 1.0
