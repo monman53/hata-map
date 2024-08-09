@@ -23,7 +23,6 @@ const paramString = (param: Vec) => {
 <template>
   <div id="base">
     <pre>
-n = 2 ^ {{ displayParameter.n }}
 a = {{ paramString(parameter.a) }}
 b = {{ paramString(parameter.b) }}
 c = {{ paramString(parameter.c) }}
