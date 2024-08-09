@@ -37,7 +37,7 @@ export const displayProps = ref([
       { name: 'majorR', default: 0.65, min: 0.5, max: 1.0, step: 0.0001 },
       { name: 'majorStd', default: 0.05, min: 0, max: 0.3, step: 0.0001 },
       { name: 'minorR', default: 0, min: 0.0, max: 0.5, step: 0.0001 },
-      { name: 'minorStd', default: 0, min: 0, max: 0.3, step: 0.0001 },
+      { name: 'minorStd', default: 0.05, min: 0, max: 0.3, step: 0.0001 },
       { name: 'pointSize', default: 0.5, min: 0, max: 2, step: 0.001 },
       { name: 'timeScale', default: 0.4, min: 0, max: 3, step: 0.001 },
       { name: 'moveScale', default: 0.0, min: 0, max: 32, step: 0.001 },
