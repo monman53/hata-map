@@ -7,10 +7,18 @@ export const humanReadable = (x: number) => {
 
 export const resetParameter = (category: any) => {
   for (const prop of category.props) {
-    if (prop.default instanceof Vec) {
-      parameter.value[prop.name as keyof typeof parameter.value] = prop.default.copy()
-    } else {
-      parameter.value[prop.name as keyof typeof parameter.value] = prop.default
+    if (prop.name in parameter.value) {
+      if (prop.default instanceof Vec) {
+        parameter.value[prop.name as keyof typeof parameter.value] = prop.default.copy()
+      } else {
+        parameter.value[prop.name as keyof typeof parameter.value] = prop.default
+      }
+    }else{
+      if (prop.default instanceof Vec) {
+        displayParameter.value[prop.name as keyof typeof displayParameter.value] = prop.default.copy()
+      } else {
+        displayParameter.value[prop.name as keyof typeof displayParameter.value] = prop.default
+      }
     }
   }
 
