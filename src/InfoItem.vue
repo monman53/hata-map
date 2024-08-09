@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Vec } from './math'
-import { parameter } from './parameters'
+import { displayParameter, parameter } from './parameters'
 
 const paramString = (param: Vec) => {
   let les = ''
@@ -23,6 +23,7 @@ const paramString = (param: Vec) => {
 <template>
   <div id="base">
     <pre>
+n = 2 ^ {{ displayParameter.n }}
 a = {{ paramString(parameter.a) }}
 b = {{ paramString(parameter.b) }}
 c = {{ paramString(parameter.c) }}

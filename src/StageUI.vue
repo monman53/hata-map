@@ -140,6 +140,8 @@ const copyImage = () => {
     navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
   }, 'image/png')
 }
+
+const templateVisible = ref(false)
 </script>
 
 <template>
@@ -162,7 +164,7 @@ const copyImage = () => {
       <div v-if="mode === 'control'" id="controller">
         <!-- Animation controller -->
         <fieldset>
-          <legend>Random Animation</legend>
+          <!-- <legend>Random Animation</legend> -->
           <!-- {{ app.pointerPos.x }}, {{ app.pointerPos.y }}<br>
           {{ app.c.x }}, {{ app.c.y }} -->
           <span id="animation">
@@ -170,6 +172,10 @@ const copyImage = () => {
             <i v-if="!app.pause" class="bi bi-pause-fill pointer" @click="pauseResume"></i>
             <i v-if="app.pause" class="bi bi-play-fill pointer" @click="pauseResume"></i>
             <i class="bi bi-skip-forward-fill pointer" @click="nextHistory"></i>
+            <!-- <i class="bi bi-dice-5 pointer" @click="()=>{
+              randomParameter()
+              app.pause = true
+            }"></i> -->
             <span style="float: right">
               <!-- <i class="bi bi-arrows-fullscreen"></i> -->
               <i
@@ -181,11 +187,22 @@ const copyImage = () => {
             </span>
           </span>
           <br />
-          FPS: {{ humanReadable(fps) }}<br />
           <!-- <label>
             <input type="checkbox" v-model="app.randomAnimation" />
             Random parameter
           </label> -->
+          <button @click="fitView">Fit view</button>
+          <button
+            @click="
+              () => {
+                randomParameter()
+                app.pause = true
+              }
+            "
+          >
+            Random
+          </button>
+          FPS: {{ humanReadable(fps) }}
         </fieldset>
 
         <!-- Display parameters -->
@@ -233,7 +250,6 @@ const copyImage = () => {
                   <br />
                 </template>
               </template>
-              <button @click="fitView">Fit view</button>
             </template>
           </fieldset>
         </template>
@@ -263,22 +279,19 @@ const copyImage = () => {
 
         <!-- Templates -->
         <fieldset>
-          <legend>Templates</legend>
-          <template v-for="(t, idx) of parameterTemplates" :key="idx">
-            <button @click="setParameter(t)">{{ t.name }}</button>
-            <br v-if="idx % 8 == 7" />
+          <legend>
+            <span class="pointer" @click="templateVisible = !templateVisible">
+              <i class="bi bi-caret-down-fill" v-if="templateVisible"></i>
+              <i class="bi bi-caret-right-fill" v-if="!templateVisible"></i>
+              Templates
+            </span>
+          </legend>
+          <template v-if="templateVisible">
+            <template v-for="(t, idx) of parameterTemplates" :key="idx">
+              <button @click="setParameter(t)">{{ t.name }}</button>
+              <br v-if="idx % 8 == 7" />
+            </template>
           </template>
-          <br />
-          <button
-            @click="
-              () => {
-                randomParameter()
-                app.pause = true
-              }
-            "
-          >
-            Random
-          </button>
         </fieldset>
       </div>
 
