@@ -5,6 +5,9 @@ in float colorScale;
 
 uniform vec3 hsl;
 uniform float alpha;
+uniform float lightnessOffset;
+uniform float minHue;
+uniform float maxHue;
 
 out vec4 outColor;
 
@@ -52,6 +55,7 @@ vec3 hsl2rgb(float h, float s, float l) {
 }
 
 void main() {
-    vec3 color = hsl2rgb(hsl.x, hsl.y, (0.5f + 0.5f * colorScale) * hsl.z);
+    float hue = mix(minHue, max(minHue, maxHue), colorScale);
+    vec3 color = hsl2rgb(hue, hsl.y, (lightnessOffset + (1.0f - lightnessOffset) * colorScale) * hsl.z);
     outColor = vec4(color, alpha);
 }

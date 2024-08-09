@@ -142,6 +142,9 @@ onMounted(() => {
     param2: gl.getUniformLocation(mainProgram, 'param2'),
     param3: gl.getUniformLocation(mainProgram, 'param3'),
     hsl: gl.getUniformLocation(mainProgram, 'hsl'),
+    lightnessOffset: gl.getUniformLocation(mainProgram, 'lightnessOffset'),
+    minHue: gl.getUniformLocation(mainProgram, 'minHue'),
+    maxHue: gl.getUniformLocation(mainProgram, 'maxHue'),
     alpha: gl.getUniformLocation(mainProgram, 'alpha'),
     canvasSize: gl.getUniformLocation(mainProgram, 'canvasSize')
   }
@@ -261,6 +264,9 @@ onMounted(() => {
     gl.uniform2f(mainProgLocs.prevCenter, app.value.prevC.x, app.value.prevC.y)
     gl.uniform2f(mainProgLocs.center, app.value.c.x, app.value.c.y)
     gl.uniform1f(mainProgLocs.t, app.value.t)
+    gl.uniform1f(mainProgLocs.lightnessOffset, displayParameter.value.lightnessOffset)
+    gl.uniform1f(mainProgLocs.minHue, displayParameter.value.minHue)
+    gl.uniform1f(mainProgLocs.maxHue, displayParameter.value.maxHue)
     gl.uniformMatrix4x2fv(mainProgLocs.param0, false, [
       a[0].x,
       a[0].y,
@@ -303,7 +309,7 @@ onMounted(() => {
     ])
     gl.uniform3f(
       mainProgLocs.hsl,
-      displayParameter.value.hue,
+      0, // dummy
       displayParameter.value.saturation,
       displayParameter.value.lightness
     )

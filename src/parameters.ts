@@ -10,9 +10,11 @@ export const displayParameter = ref({
   pointSize: 0.5,
   timeScale: 0.6,
   moveScale: 1.0,
-  hue: 0.3,
+  minHue: 0.3,
+  maxHue: 0.0,
   saturation: 1.0,
   lightness: 0.5,
+  lightnessOffset: 0.2,
   alpha: 0.5
 })
 
@@ -33,7 +35,8 @@ export const displayProps = ref([
     visible: true,
     props: [
       { name: 'n', default: 19, min: 0, max: 32, step: 1 },
-      { name: 'hue', default: 0.25, min: 0, max: 1, step: 0.001 },
+      { name: 'minHue', default: 0.25, min: 0, max: 1, step: 0.001 },
+      { name: 'maxHue', default: 0, min: 0, max: 1, step: 0.001 },
       { name: 'majorR', default: 0.65, min: 0.5, max: 1.0, step: 0.0001 },
       { name: 'majorStd', default: 0.05, min: 0, max: 0.3, step: 0.0001 },
       { name: 'minorR', default: 0, min: 0.0, max: 0.5, step: 0.0001 },
@@ -43,6 +46,7 @@ export const displayProps = ref([
       { name: 'moveScale', default: 0.0, min: 0, max: 32, step: 0.001 },
       { name: 'saturation', default: 1.0, min: 0, max: 1, step: 0.001 },
       { name: 'lightness', default: 0.9, min: 0, max: 1, step: 0.001 },
+      { name: 'lightnessOffset', default: 0.0, min: 0, max: 1, step: 0.001 },
       { name: 'alpha', default: 1.0, min: 0, max: 1, step: 0.001 }
     ]
   }
