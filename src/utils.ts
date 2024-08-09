@@ -1,4 +1,4 @@
-import { fitView } from './math'
+import { fitView, Vec } from './math'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 
 export const humanReadable = (x: number) => {
@@ -7,7 +7,11 @@ export const humanReadable = (x: number) => {
 
 export const resetParameter = (category: any) => {
   for (const prop of category.props) {
-    parameter.value[prop.name as keyof typeof parameter.value] = prop.default.copy()
+    if (prop.default instanceof Vec) {
+      parameter.value[prop.name as keyof typeof parameter.value] = prop.default.copy()
+    } else {
+      parameter.value[prop.name as keyof typeof parameter.value] = prop.default
+    }
   }
 
   fitView()

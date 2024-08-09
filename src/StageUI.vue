@@ -1,4 +1,13 @@
 <script lang="ts">
+const setColor = (t: any) => {
+  displayParameter.value.minHue = t.minHue
+  displayParameter.value.maxHue = t.maxHue
+  displayParameter.value.saturation = t.saturation
+  displayParameter.value.lightness = t.lightness
+  displayParameter.value.lightnessOffset = t.lightnessOffset
+  displayParameter.value.alpha = t.alpha
+}
+
 const setParameter = (t: any) => {
   parameter.value.a = t.a.copy()
   parameter.value.b = t.b.copy()
@@ -6,6 +15,7 @@ const setParameter = (t: any) => {
   parameter.value.d = t.d.copy()
   app.value.t = 0
   fitView()
+  app.value.pause = true
 }
 
 export const randomParameter = () => {
@@ -119,7 +129,7 @@ import { humanReadable, resetParameter } from './utils'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
 import { fitView, gaussianRandom, vec, vecRad } from './math'
-import { parameterTemplates } from './templates'
+import { colorTemplates, parameterTemplates } from './templates'
 import ParameterController from './ParameterController.vue'
 
 type ModeType = 'control' | 'info' | ''
@@ -287,10 +297,23 @@ const templateVisible = ref(false)
             </span>
           </legend>
           <template v-if="templateVisible">
-            <template v-for="(t, idx) of parameterTemplates" :key="idx">
-              <button @click="setParameter(t)">{{ t.name }}</button>
-              <br v-if="idx % 8 == 7" />
-            </template>
+            <!-- color -->
+            <!-- <h4>Color</h4> -->
+            <fieldset>
+              <legend>Color</legend>
+              <template v-for="(t, idx) of colorTemplates" :key="idx">
+                <button @click="setColor(t)">{{ t.name }}</button>
+                <br v-if="idx % 3 == 2" />
+              </template>
+            </fieldset>
+            <!-- parameter -->
+            <fieldset>
+              <legend>Parameter</legend>
+              <template v-for="(t, idx) of parameterTemplates" :key="idx">
+                <button @click="setParameter(t)">{{ t.name }}</button>
+                <br v-if="idx % 8 == 7" />
+              </template>
+            </fieldset>
           </template>
         </fieldset>
       </div>

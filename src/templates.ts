@@ -11,3 +11,51 @@ export const parameterTemplates = [
   { name: 'g', a: vec(0, 0.5), b: vec(0, 0), c: vec(0, 0), d: vec(0.75, 0) },
   { name: 'h', a: vec(0.5, -0.5), b: vec(0, 0), c: vec(-0.5, 0.5), d: vec(0, 0) }
 ]
+
+export const colorTemplates = [
+  {
+    name: 'autumn',
+    minHue: 0.0,
+    maxHue: 0.25,
+    saturation: 0.7,
+    lightness: 0.5,
+    lightnessOffset: 0.4,
+    alpha: 1.0
+  },
+  {
+    name: 'winter',
+    minHue: 0.62,
+    maxHue: 0,
+    saturation: 0.58,
+    lightness: 1,
+    lightnessOffset: 0.1,
+    alpha: 1.0
+  },
+  {
+    name: 'leaf',
+    minHue: 0.25,
+    maxHue: 0.0,
+    saturation: 1.0,
+    lightness: 0.9,
+    lightnessOffset: 0.1,
+    alpha: 1.0
+  },
+  {
+    name: 'sakura',
+    minHue: 0.83,
+    maxHue: 0.0,
+    saturation: 0.66,
+    lightness: 1.0,
+    lightnessOffset: 0.5,
+    alpha: 1.0
+  },
+  {
+    name: 'rainbow',
+    minHue: 0,
+    maxHue: 1,
+    saturation: 0.8,
+    lightness: 0.5,
+    lightnessOffset: 1,
+    alpha: 1.0
+  },
+]
