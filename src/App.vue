@@ -9,9 +9,9 @@ const heightPx = computed(() => {
   return app.value.height + 'px'
 })
 
-const widthPx = computed(() => {
-  return app.value.width + 'px'
-})
+// const widthPx = computed(() => {
+//   return app.value.width + 'px'
+// })
 </script>
 
 <template>

@@ -14,9 +14,10 @@ export const resetParameter = (category: any) => {
       } else {
         parameter.value[prop.name as keyof typeof parameter.value] = prop.default
       }
-    }else{
+    } else {
       if (prop.default instanceof Vec) {
-        displayParameter.value[prop.name as keyof typeof displayParameter.value] = prop.default.copy()
+        displayParameter.value[prop.name as keyof typeof displayParameter.value] =
+          prop.default.copy()
       } else {
         displayParameter.value[prop.name as keyof typeof displayParameter.value] = prop.default
       }
@@ -41,7 +42,6 @@ export const resetAllParameter = () => {
   fitView()
   fitView()
 }
-
 
 export const getHataMapRect = (z0: Vec, a: Vec, b: Vec, c: Vec, d: Vec, n: number) => {
   let left = Infinity
@@ -89,66 +89,80 @@ export const fitView = () => {
   }
 }
 
-export const randomParameter = () => {
-  parameter.value.a = vec(0, 0)
-  parameter.value.b = vec(0, 0)
-  parameter.value.c = vec(0, 0)
-  parameter.value.d = vec(0, 0)
+export const addRandomHistory = (a: Vec, b: Vec, c: Vec, d: Vec) => {
+  // Add history
+  app.value.randomHistory.push({
+    a: a.copy(),
+    b: b.copy(),
+    c: c.copy(),
+    d: d.copy()
+  })
+  if (app.value.randomHistory.length > app.value.randomHistoryMax) {
+    app.value.randomHistory.shift()
+  }
+  app.value.randomHistoryPtr = app.value.randomHistory.length - 1
+}
+
+export const createRandomParameter = () => {
+  const majorR = displayParameter.value.majorR
+  const majorRStd = displayParameter.value.majorStd
+  const minorR = displayParameter.value.minorR
+  const minorRStd = displayParameter.value.minorStd
+  const a = vec(0, 0)
+  const b = vec(0, 0)
+  const c = vec(0, 0)
+  const d = vec(0, 0)
 
   const majorParams = []
   const minorParams = []
   const rand = Math.random()
   if (rand < 1 / 4) {
-    majorParams.push(parameter.value.a)
-    majorParams.push(parameter.value.c)
-    minorParams.push(parameter.value.b)
-    minorParams.push(parameter.value.d)
+    majorParams.push(a)
+    majorParams.push(c)
+    minorParams.push(b)
+    minorParams.push(d)
   } else if (rand < 2 / 4) {
-    majorParams.push(parameter.value.a)
-    majorParams.push(parameter.value.d)
-    minorParams.push(parameter.value.b)
-    minorParams.push(parameter.value.c)
+    majorParams.push(a)
+    majorParams.push(d)
+    minorParams.push(b)
+    minorParams.push(c)
   } else if (rand < 3 / 4) {
-    majorParams.push(parameter.value.b)
-    majorParams.push(parameter.value.c)
-    minorParams.push(parameter.value.a)
-    minorParams.push(parameter.value.d)
+    majorParams.push(b)
+    majorParams.push(c)
+    minorParams.push(a)
+    minorParams.push(d)
   } else {
-    majorParams.push(parameter.value.b)
-    majorParams.push(parameter.value.d)
-    minorParams.push(parameter.value.a)
-    minorParams.push(parameter.value.c)
+    majorParams.push(b)
+    majorParams.push(d)
+    minorParams.push(a)
+    minorParams.push(c)
   }
 
   majorParams.forEach((param) => {
     const theta = Math.random() * 2 * Math.PI
-    const radius =
-      displayParameter.value.majorR + Math.abs(gaussianRandom(0, displayParameter.value.majorStd))
+    const radius = majorR + Math.abs(gaussianRandom(0, majorRStd))
     const n = vecRad(theta).mul(radius)
     param.x = n.x
     param.y = n.y
   })
   minorParams.forEach((param) => {
     const theta = Math.random() * 2 * Math.PI
-    const radius =
-      displayParameter.value.minorR + Math.abs(gaussianRandom(0, displayParameter.value.minorStd))
+    const radius = minorR + Math.abs(gaussianRandom(0, minorRStd))
     const n = vecRad(theta).mul(radius)
     param.x = n.x
     param.y = n.y
   })
 
-  // Add history
-  app.value.randomHistory.push({
-    a: parameter.value.a.copy(),
-    b: parameter.value.b.copy(),
-    c: parameter.value.c.copy(),
-    d: parameter.value.d.copy()
-  })
-  if (app.value.randomHistory.length > app.value.randomHistoryMax) {
-    app.value.randomHistory.shift()
-  }
-  app.value.randomHistoryPtr = app.value.randomHistory.length - 1
+  return { a, b, c, d }
+}
 
+export const createAndSetRandomParameter = () => {
+  const p = createRandomParameter()
+  parameter.value.a = p.a
+  parameter.value.b = p.b
+  parameter.value.c = p.c
+  parameter.value.d = p.d
   app.value.t = 0
   fitView()
+  addRandomHistory(p.a, p.b, p.c, p.d)
 }

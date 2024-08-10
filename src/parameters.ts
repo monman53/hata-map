@@ -9,7 +9,6 @@ export const displayParameter = ref({
   minorStd: 0,
   pointSize: 0.5,
   timeScale: 0.6,
-  moveScale: 1.0,
   minHue: 0.3,
   maxHue: 0.0,
   saturation: 1.0,
@@ -23,10 +22,6 @@ export const parameter = ref({
   b: vec(0, 0),
   c: vec(0, 0),
   d: vec(0, 0),
-  aStd: vec(0, 0),
-  bStd: vec(0, 0),
-  cStd: vec(0, 0),
-  dStd: vec(0, 0)
 })
 
 export const displayProps = ref([
@@ -53,7 +48,6 @@ export const displayProps = ref([
       { name: 'minorStd', default: 0.05, min: 0, max: 0.3, step: 0.0001 },
       { name: 'pointSize', default: 0.1, min: 0, max: 1, step: 0.001 },
       { name: 'timeScale', default: 0.4, min: 0, max: 1.5, step: 0.001 },
-      // { name: 'moveScale', default: 0.0, min: 0, max: 32, step: 0.001 },
     ]
   }
 ])
@@ -66,10 +60,6 @@ export const parameterProps = ref([
       { name: 'b', default: vec(0, 0), min: -1, max: 1, step: 0.001 },
       { name: 'c', default: vec(0, 0), min: -1, max: 1, step: 0.001 },
       { name: 'd', default: vec(0.65, 0), min: -1, max: 1, step: 0.001 }
-      // { name: 'aStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
-      // { name: 'bStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
-      // { name: 'cStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
-      // { name: 'dStd', default: vec(0.001, 0.001), min: 0, max: 0.01, step: 0.0001 },
     ]
   }
 ])

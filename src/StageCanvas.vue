@@ -77,8 +77,8 @@ import { app, fps } from './main'
 import mainVS from './glsl/main.vert?raw'
 import mainFS from './glsl/main.frag?raw'
 import { displayParameter, parameter } from './parameters'
-import { gaussianRandom, Vec, vec } from './math'
-import { randomParameter } from './utils'
+import { Vec, vec } from './math'
+import { createAndSetRandomParameter } from './utils'
 
 //--------------------------------
 // WebGL support functions
@@ -163,14 +163,6 @@ onMounted(() => {
   let b = [b0, b0, b0, b0]
   let c = [c0, c0, c0, c0]
   let d = [d0, d0, d0, d0]
-  let aStd2 = vec(0, 0)
-  let bStd2 = vec(0, 0)
-  let cStd2 = vec(0, 0)
-  let dStd2 = vec(0, 0)
-  let aStd3 = vec(0, 0)
-  let bStd3 = vec(0, 0)
-  let cStd3 = vec(0, 0)
-  let dStd3 = vec(0, 0)
   const render = (time: number) => {
     if (gl === null) {
       throw new Error()
@@ -216,40 +208,26 @@ onMounted(() => {
           c[1] = c[3].add(c[3].sub(c[2]))
           d[1] = d[3].add(d[3].sub(d[2]))
         }
-        aStd2 = vec(gaussianRandom(), gaussianRandom())
-        bStd2 = vec(gaussianRandom(), gaussianRandom())
-        cStd2 = vec(gaussianRandom(), gaussianRandom())
-        dStd2 = vec(gaussianRandom(), gaussianRandom())
-        aStd3 = vec(gaussianRandom(), gaussianRandom())
-        bStd3 = vec(gaussianRandom(), gaussianRandom())
-        cStd3 = vec(gaussianRandom(), gaussianRandom())
-        dStd3 = vec(gaussianRandom(), gaussianRandom())
 
         // if (app.value.randomAnimation) {
         if (app.value.pause) {
           app.value.prevScale = app.value.scale
           app.value.prevC = app.value.c
         } else {
-          randomParameter()
+          createAndSetRandomParameter()
         }
       }
     }
     appThen = time
 
-    const aStd = parameter.value.aStd
-    const bStd = parameter.value.bStd
-    const cStd = parameter.value.cStd
-    const dStd = parameter.value.dStd
-    const moveScale = displayParameter.value.moveScale
-
-    a[2] = parameter.value.a.add(aStd2.eMul(aStd).mul(moveScale))
-    b[2] = parameter.value.b.add(bStd2.eMul(bStd).mul(moveScale))
-    c[2] = parameter.value.c.add(cStd2.eMul(cStd).mul(moveScale))
-    d[2] = parameter.value.d.add(dStd2.eMul(dStd).mul(moveScale))
-    a[3] = parameter.value.a.add(aStd3.eMul(aStd).mul(moveScale))
-    b[3] = parameter.value.b.add(bStd3.eMul(bStd).mul(moveScale))
-    c[3] = parameter.value.c.add(cStd3.eMul(cStd).mul(moveScale))
-    d[3] = parameter.value.d.add(dStd3.eMul(dStd).mul(moveScale))
+    a[2] = parameter.value.a
+    b[2] = parameter.value.b
+    c[2] = parameter.value.c
+    d[2] = parameter.value.d
+    a[3] = parameter.value.a
+    b[3] = parameter.value.b
+    c[3] = parameter.value.c
+    d[3] = parameter.value.d
 
     //--------------------------------
     // Draw

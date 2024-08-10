@@ -61,7 +61,7 @@ window.addEventListener('keydown', (e: any) => {
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
 import { app, fps } from './main'
-import { fitView, humanReadable, randomParameter, resetParameter } from './utils'
+import { createAndSetRandomParameter, fitView, humanReadable, resetParameter } from './utils'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
 import { colorTemplates, parameterTemplates } from './templates'
@@ -117,10 +117,6 @@ const templateVisible = ref(false)
             <i v-if="!app.pause" class="bi bi-pause-fill pointer" @click="pauseResume"></i>
             <i v-if="app.pause" class="bi bi-play-fill pointer" @click="pauseResume"></i>
             <i class="bi bi-skip-forward-fill pointer" @click="nextHistory"></i>
-            <!-- <i class="bi bi-dice-5 pointer" @click="()=>{
-              randomParameter()
-              app.pause = true
-            }"></i> -->
             <span style="float: right">
               <!-- <i class="bi bi-arrows-fullscreen"></i> -->
               <i
@@ -140,7 +136,7 @@ const templateVisible = ref(false)
           <button
             @click="
               () => {
-                randomParameter()
+                createAndSetRandomParameter()
                 app.pause = true
               }
             "
