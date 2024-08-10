@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Vec } from './math'
-import { displayParameter, parameter } from './parameters'
+import { parameter } from './parameters'
 
 const paramString = (param: Vec) => {
   let les = ''

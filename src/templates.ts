@@ -14,6 +14,15 @@ export const parameterTemplates = [
 
 export const colorTemplates = [
   {
+    name: 'r2g',
+    minHue: 0.0,
+    maxHue: 0.3,
+    saturation: 1.0,
+    lightness: 0.5,
+    lightnessOffset: 1.0,
+    alpha: 1.0
+  },
+  {
     name: 'autumn',
     minHue: 0.0,
     maxHue: 0.25,
