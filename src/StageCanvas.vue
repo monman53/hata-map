@@ -78,7 +78,7 @@ import mainVS from './glsl/main.vert?raw'
 import mainFS from './glsl/main.frag?raw'
 import { displayParameter, parameter } from './parameters'
 import { gaussianRandom, Vec, vec } from './math'
-import { randomParameter } from './StageUI.vue'
+import { randomParameter } from './utils'
 
 //--------------------------------
 // WebGL support functions

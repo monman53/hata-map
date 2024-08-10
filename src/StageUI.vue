@@ -18,70 +18,6 @@ const setParameter = (t: any) => {
   app.value.pause = true
 }
 
-export const randomParameter = () => {
-  parameter.value.a = vec(0, 0)
-  parameter.value.b = vec(0, 0)
-  parameter.value.c = vec(0, 0)
-  parameter.value.d = vec(0, 0)
-
-  let majorParams = []
-  let minorParams = []
-  const rand = Math.random()
-  if (rand < 1 / 4) {
-    majorParams.push(parameter.value.a)
-    majorParams.push(parameter.value.c)
-    minorParams.push(parameter.value.b)
-    minorParams.push(parameter.value.d)
-  } else if (rand < 2 / 4) {
-    majorParams.push(parameter.value.a)
-    majorParams.push(parameter.value.d)
-    minorParams.push(parameter.value.b)
-    minorParams.push(parameter.value.c)
-  } else if (rand < 3 / 4) {
-    majorParams.push(parameter.value.b)
-    majorParams.push(parameter.value.c)
-    minorParams.push(parameter.value.a)
-    minorParams.push(parameter.value.d)
-  } else {
-    majorParams.push(parameter.value.b)
-    majorParams.push(parameter.value.d)
-    minorParams.push(parameter.value.a)
-    minorParams.push(parameter.value.c)
-  }
-
-  majorParams.forEach((param) => {
-    const theta = Math.random() * 2 * Math.PI
-    const radius =
-      displayParameter.value.majorR + Math.abs(gaussianRandom(0, displayParameter.value.majorStd))
-    const n = vecRad(theta).mul(radius)
-    param.x = n.x
-    param.y = n.y
-  })
-  minorParams.forEach((param) => {
-    const theta = Math.random() * 2 * Math.PI
-    const radius =
-      displayParameter.value.minorR + Math.abs(gaussianRandom(0, displayParameter.value.minorStd))
-    const n = vecRad(theta).mul(radius)
-    param.x = n.x
-    param.y = n.y
-  })
-
-  // Add history
-  app.value.randomHistory.push({
-    a: parameter.value.a.copy(),
-    b: parameter.value.b.copy(),
-    c: parameter.value.c.copy(),
-    d: parameter.value.d.copy()
-  })
-  if (app.value.randomHistory.length > app.value.randomHistoryMax) {
-    app.value.randomHistory.shift()
-  }
-  app.value.randomHistoryPtr = app.value.randomHistory.length - 1
-
-  app.value.t = 0
-  fitView()
-}
-
 const prevHistory = () => {
   app.value.pause = true
   app.value.randomHistoryPtr = Math.max(0, app.value.randomHistoryPtr - 1)
@@ -125,10 +61,9 @@ window.addEventListener('keydown', (e: any) => {
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
 import { app, fps } from './main'
-import { humanReadable, resetParameter } from './utils'
+import { fitView, humanReadable, randomParameter, resetParameter } from './utils'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
-import { fitView, gaussianRandom, vec, vecRad } from './math'
 import { colorTemplates, parameterTemplates } from './templates'
 import ParameterController from './ParameterController.vue'
 
