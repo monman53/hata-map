@@ -76,9 +76,16 @@ import { app, fps } from './main'
 // Shaders
 import mainVS from './glsl/main.vert?raw'
 import mainFS from './glsl/main.frag?raw'
-import { displayParameter, parameter } from './parameters'
+import { defaultParameter, displayParameter, parameter } from './parameters'
 import { Vec, vec } from './math'
-import { createAndSetRandomParameter } from './utils'
+import {
+  addRandomHistory,
+  createAndSetRandomParameter,
+  createRandomParameter,
+  fitView,
+  setCurrentParameter,
+  setPrevParameter
+} from './utils'
 
 //--------------------------------
 // WebGL support functions
@@ -163,6 +170,13 @@ onMounted(() => {
   let b = [b0, b0, b0, b0]
   let c = [c0, c0, c0, c0]
   let d = [d0, d0, d0, d0]
+  let prevScale = app.value.prevScale
+  let currentScale = app.value.scale
+  let prevC = app.value.prevC
+  let currentC = app.value.c
+  app.value.prevParameter = defaultParameter()
+  setCurrentParameter(defaultParameter())
+  fitView()
   const render = (time: number) => {
     if (gl === null) {
       throw new Error()
@@ -188,38 +202,43 @@ onMounted(() => {
       // Update
       if (app.value.t > 1.0 || app.value.pause) {
         app.value.t = app.value.t - Math.floor(app.value.t)
-
-        if (app.value.pause) {
-          a[0] = parameter.value.a
-          b[0] = parameter.value.b
-          c[0] = parameter.value.c
-          d[0] = parameter.value.d
-          a[1] = parameter.value.a
-          b[1] = parameter.value.b
-          c[1] = parameter.value.c
-          d[1] = parameter.value.d
-        } else {
-          a[0] = a[3]
-          b[0] = b[3]
-          c[0] = c[3]
-          d[0] = d[3]
-          a[1] = a[3].add(a[3].sub(a[2]))
-          b[1] = b[3].add(b[3].sub(b[2]))
-          c[1] = c[3].add(c[3].sub(c[2]))
-          d[1] = d[3].add(d[3].sub(d[2]))
-        }
-
-        // if (app.value.randomAnimation) {
         if (app.value.pause) {
           app.value.prevScale = app.value.scale
           app.value.prevC = app.value.c
         } else {
-          createAndSetRandomParameter()
+          setPrevParameter(parameter.value)
+          const p = createRandomParameter()
+          setCurrentParameter(p)
+          fitView()
+          addRandomHistory(p)
         }
       }
     }
     appThen = time
 
+    if (app.value.pause) {
+      a[0] = parameter.value.a
+      b[0] = parameter.value.b
+      c[0] = parameter.value.c
+      d[0] = parameter.value.d
+      a[1] = parameter.value.a
+      b[1] = parameter.value.b
+      c[1] = parameter.value.c
+      d[1] = parameter.value.d
+      prevScale = app.value.scale
+      prevC = app.value.c
+    } else {
+      a[0] = app.value.prevParameter.a
+      b[0] = app.value.prevParameter.b
+      c[0] = app.value.prevParameter.c
+      d[0] = app.value.prevParameter.d
+      a[1] = app.value.prevParameter.a
+      b[1] = app.value.prevParameter.b
+      c[1] = app.value.prevParameter.c
+      d[1] = app.value.prevParameter.d
+      prevScale = app.value.prevScale
+      prevC = app.value.prevC
+    }
     a[2] = parameter.value.a
     b[2] = parameter.value.b
     c[2] = parameter.value.c
@@ -228,6 +247,8 @@ onMounted(() => {
     b[3] = parameter.value.b
     c[3] = parameter.value.c
     d[3] = parameter.value.d
+    currentScale = app.value.scale
+    currentC = app.value.c
 
     //--------------------------------
     // Draw
@@ -236,11 +257,11 @@ onMounted(() => {
     gl.useProgram(mainProgram)
 
     gl.uniform1i(mainProgLocs.n, displayParameter.value.n)
-    gl.uniform1f(mainProgLocs.prevScale, app.value.prevScale)
-    gl.uniform1f(mainProgLocs.scale, app.value.scale)
     gl.uniform1f(mainProgLocs.pointSize, displayParameter.value.pointSize)
-    gl.uniform2f(mainProgLocs.prevCenter, app.value.prevC.x, app.value.prevC.y)
-    gl.uniform2f(mainProgLocs.center, app.value.c.x, app.value.c.y)
+    gl.uniform1f(mainProgLocs.prevScale, prevScale)
+    gl.uniform1f(mainProgLocs.scale, currentScale)
+    gl.uniform2f(mainProgLocs.prevCenter, prevC.x, prevC.y)
+    gl.uniform2f(mainProgLocs.center, currentC.x, currentC.y)
     gl.uniform1f(mainProgLocs.t, app.value.t)
     gl.uniform1f(mainProgLocs.lightnessOffset, displayParameter.value.lightnessOffset)
     gl.uniform1f(mainProgLocs.minHue, displayParameter.value.minHue)

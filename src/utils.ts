@@ -86,11 +86,7 @@ export const getHataMapRect = (z0: Vec, p: Parameter, n: number) => {
 }
 
 export const fitView = () => {
-  const a = parameter.value.a
-  const b = parameter.value.b
-  const c = parameter.value.c
-  const d = parameter.value.d
-  const [left, top, right, bottom] = getHataMapRect(vec(0, 0), { a, b, c, d }, 10)
+  const [left, top, right, bottom] = getHataMapRect(vec(0, 0), parameter.value, 10)
 
   app.value.prevC = app.value.c
   app.value.c = vec((left + right) / 2, (top + bottom) / 2)
@@ -189,6 +185,13 @@ export const createAndSetRandomParameter = () => {
   app.value.t = 0
   fitView()
   addRandomHistory(p)
+}
+
+export const setPrevParameter = (p: Parameter) => {
+  app.value.prevParameter.a = p.a.copy()
+  app.value.prevParameter.b = p.b.copy()
+  app.value.prevParameter.c = p.c.copy()
+  app.value.prevParameter.d = p.d.copy()
 }
 
 export const setCurrentParameter = (p: Parameter) => {
