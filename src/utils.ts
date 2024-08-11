@@ -1,5 +1,5 @@
 import { app } from './main'
-import { gaussianRandom, hataMap, vec, Vec, vecRad } from './math'
+import { gaussianRandom, vec, Vec, vecRad } from './math'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 
 export const humanReadable = (x: number) => {
@@ -43,7 +43,27 @@ export const resetAllParameter = () => {
   fitView()
 }
 
-export const getHataMapRect = (z0: Vec, a: Vec, b: Vec, c: Vec, d: Vec, n: number) => {
+// TODO: Move to math
+const cMul = (a: Vec, b: Vec) => {
+  return vec(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x)
+}
+
+// TODO: Move to math
+const cComp = (a: Vec) => {
+  return vec(a.x, -a.y)
+}
+
+export const hataMap = (z: Vec, p: Parameter, type: 0 | 1) => {
+  if (type === 0) {
+    return cMul(p.a, z).add(cMul(p.b, cComp(z)))
+  } else {
+    return cMul(p.c, vec(z.x - 1, z.y))
+      .add(cMul(p.d, vec(z.x - 1, -z.y)))
+      .add(vec(1.0, 0.0))
+  }
+}
+
+export const getHataMapRect = (z0: Vec, p: Parameter, n: number) => {
   let left = Infinity
   let top = -Infinity
   let right = -Infinity
@@ -55,8 +75,8 @@ export const getHataMapRect = (z0: Vec, a: Vec, b: Vec, c: Vec, d: Vec, n: numbe
       right = Math.max(z.x, right)
       bottom = Math.min(z.y, bottom)
     } else {
-      const z1 = hataMap(z, a, b, c, d, 0)
-      const z2 = hataMap(z, a, b, c, d, 1)
+      const z1 = hataMap(z, p, 0)
+      const z2 = hataMap(z, p, 1)
       f(z1, depth + 1)
       f(z2, depth + 1)
     }
@@ -70,7 +90,7 @@ export const fitView = () => {
   const b = parameter.value.b
   const c = parameter.value.c
   const d = parameter.value.d
-  const [left, top, right, bottom] = getHataMapRect(vec(0, 0), a, b, c, d, 10)
+  const [left, top, right, bottom] = getHataMapRect(vec(0, 0), { a, b, c, d }, 10)
 
   app.value.prevC = app.value.c
   app.value.c = vec((left + right) / 2, (top + bottom) / 2)
@@ -89,13 +109,13 @@ export const fitView = () => {
   }
 }
 
-export const addRandomHistory = (a: Vec, b: Vec, c: Vec, d: Vec) => {
+export const addRandomHistory = (p: Parameter) => {
   // Add history
   app.value.randomHistory.push({
-    a: a.copy(),
-    b: b.copy(),
-    c: c.copy(),
-    d: d.copy()
+    a: p.a.copy(),
+    b: p.b.copy(),
+    c: p.c.copy(),
+    d: p.d.copy()
   })
   if (app.value.randomHistory.length > app.value.randomHistoryMax) {
     app.value.randomHistory.shift()
@@ -103,7 +123,7 @@ export const addRandomHistory = (a: Vec, b: Vec, c: Vec, d: Vec) => {
   app.value.randomHistoryPtr = app.value.randomHistory.length - 1
 }
 
-export const createRandomParameter = () => {
+export const createRandomParameter = (): Parameter => {
   const majorR = displayParameter.value.majorR
   const majorRStd = displayParameter.value.majorStd
   const minorR = displayParameter.value.minorR
@@ -156,13 +176,35 @@ export const createRandomParameter = () => {
   return { a, b, c, d }
 }
 
+type Parameter = {
+  a: Vec
+  b: Vec
+  c: Vec
+  d: Vec
+}
+
 export const createAndSetRandomParameter = () => {
   const p = createRandomParameter()
-  parameter.value.a = p.a
-  parameter.value.b = p.b
-  parameter.value.c = p.c
-  parameter.value.d = p.d
+  hardSetParameter(p)
   app.value.t = 0
   fitView()
-  addRandomHistory(p.a, p.b, p.c, p.d)
+  addRandomHistory(p)
+}
+
+export const hardSetParameter = (p: Parameter) => {
+  // Prev
+  app.value.prevParameter.a = p.a.copy()
+  app.value.prevParameter.b = p.b.copy()
+  app.value.prevParameter.c = p.c.copy()
+  app.value.prevParameter.d = p.d.copy()
+  // Current
+  parameter.value.a = p.a.copy()
+  parameter.value.b = p.b.copy()
+  parameter.value.c = p.c.copy()
+  parameter.value.d = p.d.copy()
+  // Next
+  app.value.nextParameter.a = p.a.copy()
+  app.value.nextParameter.b = p.b.copy()
+  app.value.nextParameter.c = p.c.copy()
+  app.value.nextParameter.d = p.d.copy()
 }

@@ -2,9 +2,6 @@
 // Liner algebra
 //================================
 
-import { app } from './main'
-import { parameter } from './parameters'
-
 export const vec = (x: number, y: number) => {
   return new Vec(x, y)
 }
@@ -168,22 +165,4 @@ export const gaussianRandom = (mean = 0, stdev = 1) => {
   const z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
   // Transform to the desired mean and standard deviation:
   return z * stdev + mean
-}
-
-const cMul = (a: Vec, b: Vec) => {
-  return vec(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x)
-}
-
-const cComp = (a: Vec) => {
-  return vec(a.x, -a.y)
-}
-
-export const hataMap = (z: Vec, a: Vec, b: Vec, c: Vec, d: Vec, type: 0 | 1) => {
-  if (type === 0) {
-    return cMul(a, z).add(cMul(b, cComp(z)))
-  } else {
-    return cMul(c, vec(z.x - 1, z.y))
-      .add(cMul(d, vec(z.x - 1, -z.y)))
-      .add(vec(1.0, 0.0))
-  }
 }

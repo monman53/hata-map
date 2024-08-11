@@ -16,9 +16,10 @@ export const app = ref({
   prevC: vec(0, 0),
   scale: 0,
   prevScale: 0,
+  prevParameter: { a: vec(0, 0), b: vec(0, 0), c: vec(0, 0), d: vec(0, 0) },
+  nextParameter: { a: vec(0, 0), b: vec(0, 0), c: vec(0, 0), d: vec(0, 0) },
   pointerPos: vec(0, 0),
   mousePos: vec(0, 0),
-  randomAnimation: false,
   // TODO: Better way
   randomHistory: [
     {
