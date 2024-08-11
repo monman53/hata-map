@@ -40,6 +40,20 @@ float closeTheta(float a, float b) {
     return b;
 }
 
+vec2 hata(vec2 z, vec2 a, vec2 b, vec2 c, vec2 d, int n) {
+    int flag = gl_VertexID;
+    for(int i = 0; i < n; i++) {
+        if((flag & (1 << i)) == 0) {
+            // f1
+            z = mul(a, z) + mul(b, comp(z));
+        } else {
+            // f2
+            z = mul(c, vec2(z.x - 1.f, z.y)) + mul(d, vec2(z.x - 1.0f, -z.y)) + vec2(1.0f, 0.0f);
+        }
+    }
+    return z;
+}
+
 void main() {
     // Parameter Bezier
     float s = t;
@@ -94,19 +108,12 @@ void main() {
     vec2 d = dr * vec2(cos(dt), sin(dt));
 
     // Hata-map
-    vec2 z = vec2(0.0f);
-    int flag = gl_VertexID;
-    for(int i = 0; i < n; i++) {
-        if((flag & (1 << i)) == 0) {
-            // f1
-            z = mul(a, z) + mul(b, comp(z));
-        } else {
-            // f2
-            z = mul(c, vec2(z.x - 1.f, z.y)) + mul(d, vec2(z.x - 1.0f, -z.y)) + vec2(1.0f, 0.0f);
-        }
-    }
+    vec2 z = hata(vec2(0.0f), a, b, c, d, n);
+    // vec2 z0 = hata(vec2(0.0f), a0, b0, c0, d0, n);
+    // vec2 z1 = hata(vec2(0.0f), a1, b1, c1, d1, n);
+    // vec2 z = mix(z0, z1, s);
 
-    s = smoothstep(0.f, 1.f, s);
+    // s = smoothstep(0.f, 1.f, s);
     float currentScale = mix(prevScale, scale, s);
     vec2 currentCenter = mix(prevCenter, center, vec2(s));
 
