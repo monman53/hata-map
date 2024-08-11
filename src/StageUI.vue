@@ -9,12 +9,10 @@ const setColor = (t: any) => {
 }
 
 const setParameter = (t: any) => {
-  parameter.value.a = t.a.copy()
-  parameter.value.b = t.b.copy()
-  parameter.value.c = t.c.copy()
-  parameter.value.d = t.d.copy()
-  app.value.t = 0
+  setPrevParameter(t)
+  setCurrentParameter(t)
   fitView()
+  app.value.t = 0
   app.value.pause = true
 }
 
@@ -61,7 +59,7 @@ window.addEventListener('keydown', (e: any) => {
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
 import { app, fps } from './main'
-import { createAndSetRandomParameter, fitView, humanReadable, resetParameter } from './utils'
+import { createAndSetRandomParameter, fitView, humanReadable, resetParameter, setCurrentParameter, setPrevParameter } from './utils'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
 import { colorTemplates, parameterTemplates } from './templates'
