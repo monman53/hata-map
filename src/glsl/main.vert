@@ -27,9 +27,10 @@ vec2 comp(vec2 a) {
 
 void main() {
     // Parameter Bezier
-    float s = smoothstep(0.f, 1.f, t);
+    float s = t;
+    s = smoothstep(0.f, 1.f, t);
     s = smoothstep(0.f, 1.f, s);
-    s = smoothstep(0., 1., s);
+    s = smoothstep(0.f, 1.f, s);
     mat4x2 param4 = (1.0f - s) * param0 + s * param1;
     mat4x2 param5 = (1.0f - s) * param1 + s * param2;
     mat4x2 param6 = (1.0f - s) * param2 + s * param3;
@@ -44,6 +45,31 @@ void main() {
     vec2 b = param9[1];
     vec2 c = param9[2];
     vec2 d = param9[3];
+
+    // {
+    //     vec2 a0 = param0[0];
+    //     vec2 b0 = param0[1];
+    //     vec2 c0 = param0[2];
+    //     vec2 d0 = param0[3];
+    //     vec2 a1 = param3[0];
+    //     vec2 b1 = param3[1];
+    //     vec2 c1 = param3[2];
+    //     vec2 d1 = param3[3];
+
+    //     float ar = mix(length(a0), length(a1), s);
+    //     float br = mix(length(b0), length(b1), s);
+    //     float cr = mix(length(c0), length(c1), s);
+    //     float dr = mix(length(d0), length(d1), s);
+    //     float at = mix(atan(a0.y, a0.x), atan(a1.y, a1.x), s);
+    //     float bt = mix(atan(b0.y, b0.x), atan(b1.y, b1.x), s);
+    //     float ct = mix(atan(c0.y, c0.x), atan(c1.y, c1.x), s);
+    //     float dt = mix(atan(d0.y, d0.x), atan(d1.y, d1.x), s);
+
+    //     a = ar * vec2(cos(at), sin(at));
+    //     b = br * vec2(cos(bt), sin(bt));
+    //     c = cr * vec2(cos(ct), sin(ct));
+    //     d = dr * vec2(cos(dt), sin(dt));
+    // }
 
     // Hata-map
     vec2 z = vec2(0.0f);

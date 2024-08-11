@@ -191,6 +191,13 @@ export const createAndSetRandomParameter = () => {
   addRandomHistory(p)
 }
 
+export const setCurrentParameter = (p: Parameter) => {
+  parameter.value.a = p.a.copy()
+  parameter.value.b = p.b.copy()
+  parameter.value.c = p.c.copy()
+  parameter.value.d = p.d.copy()
+}
+
 export const hardSetParameter = (p: Parameter) => {
   // Prev
   app.value.prevParameter.a = p.a.copy()
@@ -203,8 +210,9 @@ export const hardSetParameter = (p: Parameter) => {
   parameter.value.c = p.c.copy()
   parameter.value.d = p.d.copy()
   // Next
-  app.value.nextParameter.a = p.a.copy()
-  app.value.nextParameter.b = p.b.copy()
-  app.value.nextParameter.c = p.c.copy()
-  app.value.nextParameter.d = p.d.copy()
+  const n = createRandomParameter()
+  app.value.nextParameter.a = n.a.copy()
+  app.value.nextParameter.b = n.b.copy()
+  app.value.nextParameter.c = n.c.copy()
+  app.value.nextParameter.d = n.d.copy()
 }

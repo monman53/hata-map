@@ -17,12 +17,16 @@ export const displayParameter = ref({
   alpha: 0.5
 })
 
-export const parameter = ref({
-  a: vec(0, 0),
-  b: vec(0, 0),
-  c: vec(0, 0),
-  d: vec(0, 0),
-})
+export const defaultParameter = () => {
+  return {
+    a: vec(0.7, -0.2),
+    b: vec(0, 0),
+    c: vec(0, 0),
+    d: vec(0.65, 0)
+  }
+}
+
+export const parameter = ref(defaultParameter())
 
 export const displayProps = ref([
   {
@@ -47,7 +51,7 @@ export const displayProps = ref([
       { name: 'minorR', default: 0, min: 0.0, max: 0.5, step: 0.0001 },
       { name: 'minorStd', default: 0.05, min: 0, max: 0.3, step: 0.0001 },
       { name: 'pointSize', default: 0.1, min: 0, max: 1, step: 0.001 },
-      { name: 'timeScale', default: 0.4, min: 0, max: 1.5, step: 0.001 },
+      { name: 'timeScale', default: 0.4, min: 0, max: 1.5, step: 0.001 }
     ]
   }
 ])
