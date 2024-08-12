@@ -53,13 +53,24 @@ window.addEventListener('keydown', (e: any) => {
   if (e.key === 'f') {
     fitView()
   }
+  if (e.key === 'r') {
+    createAndSetRandomParameter()
+    app.value.pause = true
+  }
 })
 </script>
 
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
 import { app, fps } from './main'
-import { createAndSetRandomParameter, fitView, humanReadable, resetParameter, setCurrentParameter, setPrevParameter } from './utils'
+import {
+  createAndSetRandomParameter,
+  fitView,
+  humanReadable,
+  resetParameter,
+  setCurrentParameter,
+  setPrevParameter
+} from './utils'
 import { displayParameter, displayProps, parameter, parameterProps } from './parameters'
 import { canvas } from './StageCanvas.vue'
 import { colorTemplates, parameterTemplates } from './templates'

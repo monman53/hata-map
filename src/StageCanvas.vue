@@ -80,7 +80,6 @@ import { defaultParameter, displayParameter, parameter } from './parameters'
 import { Vec, vec } from './math'
 import {
   addRandomHistory,
-  createAndSetRandomParameter,
   createRandomParameter,
   fitView,
   setCurrentParameter,
@@ -322,6 +321,7 @@ onMounted(() => {
     gl.enable(gl.BLEND)
 
     gl.clearColor(0, 0, 0, 1)
+    // gl.clearColor(1, 1, 1, 1)
     gl.clear(gl.COLOR_BUFFER_BIT)
 
     gl.drawArrays(gl.POINTS, 0, 1 << displayParameter.value.n)
